@@ -6,7 +6,7 @@ retrying
 retrying-async
 tinydb
 tinyrecord
-Pillow
+Pillow==8.3.1
 py-cpuinfo
 ujson
 psutil
