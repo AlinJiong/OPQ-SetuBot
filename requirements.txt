@@ -6,7 +6,7 @@ attrs==21.2.0
 Automat==0.6.0
 blinker==1.4
 botoy==7.8
-chardet==4.0.0
+chardet==3.0.2
 charset-normalizer==2.0.7
 click==8.0.3
 cloud-init==21.3
