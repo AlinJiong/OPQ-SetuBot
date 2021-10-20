@@ -10,11 +10,11 @@
             "pixiv": true
         },
         "r18": {
-            "group": true,
-            "temp": true
+            "group": false,
+            "temp": false
         },
         "freq": {
-            "limitCount": 10,
+            "limitCount": 12,
             "refreshTime": 120
         },
         "quality": "large",
@@ -24,7 +24,7 @@
             "temp": 10
         },
         "revokeTime": {
-            "group": 2,
+            "group": 20,
             "temp": 0
         }
     },
