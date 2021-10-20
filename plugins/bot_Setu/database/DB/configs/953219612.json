@@ -1,17 +1,32 @@
 {
     "setting": {
-        "setu": true,
+        "setu": {
+            "group": true,
+            "temp": true
+        },
         "api": {
             "lolicon": true,
             "yuban": true,
             "pixiv": true
         },
-        "r18": false,
+        "r18": {
+            "group": true,
+            "temp": true
+        },
+        "freq": {
+            "limitCount": 10,
+            "refreshTime": 120
+        },
         "quality": "large",
         "at": false,
-        "sentRefreshTime": 600,
-        "singleMaximum": 12,
-        "revokeTime": 0
+        "singleMaximum": {
+            "group": 5,
+            "temp": 10
+        },
+        "revokeTime": {
+            "group": 20,
+            "temp": 0
+        }
     },
     "setuInfoShow": {
         "title": true,

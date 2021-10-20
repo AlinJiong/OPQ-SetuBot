@@ -6,11 +6,11 @@
             "yuban": true,
             "pixiv": true
         },
-        "r18": false,
+        "r18": true,
         "quality": "large",
         "at": false,
         "sentRefreshTime": 600,
-        "singleMaximum": 12,
+        "singleMaximum": 10,
         "revokeTime": 0
     },
     "setuInfoShow": {
