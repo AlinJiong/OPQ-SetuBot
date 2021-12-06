@@ -24,10 +24,8 @@ import requests
 
 
 class SearchNews:
-    def __init__(self):
-        self.msg = '早报'
 
-    async def get_news(self):
+    async def get_news():
         url = "https://v2.alapi.cn/api/zaobao"
         payload = "token=EFolx1cxAdqqSWqy&format=json"
         headers = {'Content-Type': "application/x-www-form-urlencoded"}
