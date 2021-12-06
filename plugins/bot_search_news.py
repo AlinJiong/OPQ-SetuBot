@@ -25,30 +25,30 @@ import requests
 
 class SearchNews:
 
-    async def get_news():
+    def get_news():
         url = "https://v2.alapi.cn/api/zaobao"
         payload = "token=EFolx1cxAdqqSWqy&format=json"
         headers = {'Content-Type': "application/x-www-form-urlencoded"}
         response = requests.request("POST", url, data=payload, headers=headers)
-        img_url = response.text['image'].replace('\\', '')
+        text_to_dic = json.loads(response.text)
+        img_url = text_to_dic['data']['image']
 
         content = httpx.get(img_url).content
         with BytesIO() as bf:
-            image = Image.open(content)
+            image = Image.open(BytesIO(content))
             if image.format == 'WEBP':
                 image.save(bf, format="JPEG")
                 img = base64.b64encode(bf.getvalue()).decode()
                 return img
-                # await self.send.aimage(img, msg="早报", type=self.send.TYPE_BASE64)
 
 
 @deco.ignore_botself
 @deco.equal_content("早报")
 async def receive_group_msg(_):
-    await S.aimage(SearchNews.get_news(), msg="早报", type=S.TYPE_BASE64)
+    await S.aimage(SearchNews.get_news(),  type=S.TYPE_BASE64)
 
 
 @deco.ignore_botself
 @deco.equal_content("早报")
 async def receive_friend_msg(_):
-    await S.aimage(SearchNews.get_news(), msg="早报", type=S.TYPE_BASE64)
+    await S.aimage(SearchNews.get_news(), type=S.TYPE_BASE64)
