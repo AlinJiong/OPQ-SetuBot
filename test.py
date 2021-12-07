@@ -5,19 +5,36 @@ import base64
 import json
 from PIL import Image, ImageFilter
 
-url = "https://v2.alapi.cn/api/zaobao"
-payload = "token=EFolx1cxAdqqSWqy&format=json"
-headers = {'Content-Type': "application/x-www-form-urlencoded"}
-response = requests.request("POST", url, data=payload, headers=headers)
-text_to_dic = json.loads(response.text)
-img_url = text_to_dic['data']['image']
+# url = "https://v2.alapi.cn/api/zaobao"
+# payload = "token=EFolx1cxAdqqSWqy&format=json"
+# headers = {'Content-Type': "application/x-www-form-urlencoded"}
+# response = requests.request("POST", url, data=payload, headers=headers)
+# text_to_dic = json.loads(response.text)
+# img_url = text_to_dic['data']['image']
 
-print(img_url)
-content = httpx.get(img_url).content
+# print(img_url)
+# content = httpx.get(img_url).content
+# with BytesIO() as bf:
+#     image = Image.open(BytesIO(content))
+#     if image.format == 'WEBP':
+#         image.save(bf, format="JPEG")
+#         img = base64.b64encode(bf.getvalue()).decode()
+#         print(img)
+
+# url = "https://v2.alapi.cn/api/dog"
+# payload = "token=EFolx1cxAdqqSWqy&format=json"
+# headers = {'Content-Type': "application/x-www-form-urlencoded"}
+# response = requests.request("POST", url, data=payload, headers=headers)
+# text_to_dic = json.loads(response.text)
+# print(text_to_dic['data'])
+# content = text_to_dic['data']['content']
+# print(content)
+
+
+url = "http://api.nmb.show/xiaojiejie1.php"
+content = requests.request("get", url).content
 with BytesIO() as bf:
     image = Image.open(BytesIO(content))
-    if image.format == 'WEBP':
-        image.save(bf, format="JPEG")
-        img = base64.b64encode(bf.getvalue()).decode()
-        print(img)
-        
+    image.save(bf, format="JPEG")
+    img = base64.b64encode(bf.getvalue()).decode()
+    print(img)
