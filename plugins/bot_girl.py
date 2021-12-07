@@ -32,16 +32,16 @@ class SearchNews:
             image = Image.open(BytesIO(content))
             image.save(bf, format="JPEG")
             img = base64.b64encode(bf.getvalue()).decode()
-            return img
+            print(img)
 
 
 @deco.ignore_botself
-@deco.in_content("*妹子图*")
+@deco.in_content("妹子图")
 async def receive_group_msg(_):
     await S.aimage(SearchNews.get_news(),  type=S.TYPE_BASE64)
 
 
 @deco.ignore_botself
-@deco.in_content("*妹子图*")
+@deco.in_content("妹子图")
 async def receive_friend_msg(_):
     await S.aimage(SearchNews.get_news(),  type=S.TYPE_BASE64)
