@@ -43,10 +43,14 @@ class SearchNews:
                 image.save(bf, format="JPEG")
                 img = base64.b64encode(bf.getvalue()).decode()
                 action = Action(qq=461505108)
-                return action.sendFriendPic(2311366525, content="早报", picBase64Buf=img)
+                action.sendGroupPic(
+                    544830164, content="#今日早报#", picBase64Buf=img)
+                action.sendGroupPic(
+                    257069779, content="#今日早报#", picBase64Buf=img)
+                return action.sendFriendPic(2311366525, content="#今日早报#", picBase64Buf=img)
 
 
 job1 = scheduler.add_job(
-    SearchNews.get_news, 'interval', hours=9, minutes=0)
+    SearchNews.get_news, 'cron', hours=9, minutes=0)
 
 # job2 = scheduler.add_job(lambda: print("我一分钟出现一次"), 'interval', minutes=1)
