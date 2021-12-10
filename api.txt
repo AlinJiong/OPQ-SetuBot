@@ -11,5 +11,5 @@ python安装依赖、Python环境依赖没安装，导致有三个包安装不�
 2、没提前运行bot
 3、pillow安装8.3.1版本
 4、单独下载botoy
-5、Coreconf里面，websocket需要打开，注意查看配置
-6、关闭终端还能继续运行的话，使用nohup ./OPQBot & 命令来后台运行
+5、关闭终端还能继续运行的话，使用nohup ./OPQBot & 命令来后台运行
+6、不修改端口选项
