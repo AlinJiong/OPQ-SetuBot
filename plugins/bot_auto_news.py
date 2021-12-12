@@ -47,10 +47,15 @@ class SearchNews:
                     544830164, content="#今日早报#", picBase64Buf=img)
                 action.sendGroupPic(
                     257069779, content="#今日早报#", picBase64Buf=img)
-                return action.sendFriendPic(2311366525, content="#今日早报#", picBase64Buf=img)
+                # action.sendGroupPic(
+                #     953219612, content="#今日早报#", picBase64Buf=img)
+                action.sendFriendPic(
+                    2311366525, content="#今日早报#", picBase64Buf=img)
 
 
 job1 = scheduler.add_job(
-    SearchNews.get_news, 'cron', hours=9, minutes=0)
+    SearchNews.get_news, 'cron', hour=9, minute=0)
 
+# job1 = scheduler.add_job(
+#     SearchNews.get_news, 'interval', minutes=1)
 # job2 = scheduler.add_job(lambda: print("我一分钟出现一次"), 'interval', minutes=1)
