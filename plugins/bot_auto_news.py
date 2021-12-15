@@ -43,14 +43,17 @@ class SearchNews:
                 image.save(bf, format="JPEG")
                 img = base64.b64encode(bf.getvalue()).decode()
                 action = Action(qq=461505108)
-                action.sendGroupPic(
-                    544830164, content="#今日早报#", picBase64Buf=img)
-                action.sendGroupPic(
-                    257069779, content="#今日早报#", picBase64Buf=img)
-                # action.sendGroupPic(
-                #     953219612, content="#今日早报#", picBase64Buf=img)
-                action.sendFriendPic(
-                    2311366525, content="#今日早报#", picBase64Buf=img)
+                try:
+                    action.sendGroupPic(
+                        544830164, content="#今日早报#", picBase64Buf=img)
+                    action.sendGroupPic(
+                        257069779, content="#今日早报#", picBase64Buf=img)
+                    # action.sendGroupPic(
+                    #     953219612, content="#今日早报#", picBase64Buf=img)
+                    action.sendFriendPic(
+                        2311366525, content="#今日早报#", picBase64Buf=img)
+                except:
+                    del action
 
 
 job1 = scheduler.add_job(
