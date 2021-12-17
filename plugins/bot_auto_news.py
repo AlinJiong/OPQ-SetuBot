@@ -47,8 +47,8 @@ def send_news():
     action = Action(qq=461505108)
     img = get_news()
     try:
-        # action.sendGroupPic(544830164, content="#今日早报#", picBase64Buf=img)
-        # action.sendGroupPic(257069779, content="#今日早报#", picBase64Buf=img)
+        action.sendGroupPic(544830164, content="#今日早报#", picBase64Buf=img)
+        action.sendGroupPic(257069779, content="#今日早报#", picBase64Buf=img)
         # action.sendGroupPic(953219612, content="#今日早报#", picBase64Buf=img)
         action.sendFriendPic(2311366525, content="#今日早报#", picBase64Buf=img)
         del action
@@ -57,7 +57,7 @@ def send_news():
         logger.info("发送早报失败！")
 
 
-job1 = scheduler.add_job(send_news(), 'cron', hour=16, minute=35)
+job1 = scheduler.add_job(send_news, 'cron', hour=9, minute=0)
 
 # job1 = scheduler.add_job(get_news, 'interval', minutes=1)
 
