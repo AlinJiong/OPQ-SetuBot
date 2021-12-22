@@ -50,6 +50,7 @@ def send_news():
         action.sendGroupPic(544830164, content="#今日早报#", picBase64Buf=img)
         action.sendGroupPic(257069779, content="#今日早报#", picBase64Buf=img)
         # action.sendGroupPic(953219612, content="#今日早报#", picBase64Buf=img)
+        action.sendGroupPic(554262929, content="#今日早报#", picBase64Buf=img)
         action.sendFriendPic(2311366525, content="#今日早报#", picBase64Buf=img)
         del action
         logger.info("发送早报成功！")
