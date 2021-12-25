@@ -40,26 +40,55 @@ def get_news():
         if image.format == 'WEBP':
             image.save(bf, format="JPEG")
             img = base64.b64encode(bf.getvalue()).decode()
+            logger.info("获取早报成功！")
+            
             return img
+
+
+# def send_news():
+#     action = Action(qq=461505108)
+#     img = get_news()
+#     try:
+#         action.sendGroupPic(544830164, content="#今日早报#", picBase64Buf=img)
+#         action.sendGroupPic(257069779, content="#今日早报#", picBase64Buf=img)
+#         # action.sendGroupPic(953219612, content="#今日早报#", picBase64Buf=img)
+#         action.sendGroupPic(554262929, content="#今日早报#", picBase64Buf=img)
+#         action.sendFriendPic(2311366525, content="#今日早报#", picBase64Buf=img)
+#         del action
+#         logger.info("发送早报成功！")
+#     except:
+#         logger.info("发送早报失败！")
 
 
 def send_news():
     action = Action(qq=461505108)
     img = get_news()
+    groups = [257069779, 544830164, 554262929]
     try:
-        action.sendGroupPic(544830164, content="#今日早报#", picBase64Buf=img)
-        action.sendGroupPic(257069779, content="#今日早报#", picBase64Buf=img)
-        # action.sendGroupPic(953219612, content="#今日早报#", picBase64Buf=img)
-        action.sendGroupPic(554262929, content="#今日早报#", picBase64Buf=img)
+        for group in groups:
+            try:
+                action.sendGroupPic(int(group), content="#今日早报#", picBase64Buf=img)
+                logger.info("发送"+str(group)+"早报成功！")
+            except:
+                time.sleep(5)
+                logger.info("发送"+str(group)+"延时操作！")
+                action.sendGroupPic(int(group), content="#今日早报#", picBase64Buf=img)
+                
         action.sendFriendPic(2311366525, content="#今日早报#", picBase64Buf=img)
+        
         del action
         logger.info("发送早报成功！")
     except:
         logger.info("发送早报失败！")
 
 
-job1 = scheduler.add_job(send_news, 'cron', hour=9, minute=0)
+job1 = scheduler.add_job(
+    send_news, 'cron', hour=9, minute=0)
 
+# 西科 544830164
+# ac 257069779
+# 西昌 554262929
+# 测试 953219612
 # job1 = scheduler.add_job(get_news, 'interval', minutes=1)
 
 # if not flag:
