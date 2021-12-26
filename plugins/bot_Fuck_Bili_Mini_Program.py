@@ -139,8 +139,8 @@ RQFFFFAUUUUH/9k=
 @deco.ignore_botself
 @deco.these_msgtypes("XmlMsg")
 async def receive_group_msg(ctx: GroupMsg):
-    # if ctx.FromGroupId != 597124136:
-    if ctx.FromGroupId != 953219612:
+    if ctx.FromGroupId != 597124136:
+    #if ctx.FromGroupId != 953219612:
         if info := re.findall(r"(https://b23\.tv/\w*)", ctx.Content):
             try:
                 img_url = ctx.Content.split("\"")[24].replace('\\', '')
