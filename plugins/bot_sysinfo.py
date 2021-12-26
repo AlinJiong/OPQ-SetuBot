@@ -101,10 +101,10 @@ class Sysinfo:
         )
 
 
-@deco.ignore_botself
-@deco.equal_content("sysinfo")
-async def receive_group_msg(_):
-    await S.atext(Sysinfo.allInfo())
+# @deco.ignore_botself
+# @deco.equal_content("sysinfo")
+# async def receive_group_msg(_):
+#     await S.atext(Sysinfo.allInfo())
 
 
 @deco.ignore_botself

@@ -139,19 +139,21 @@ RQFFFFAUUUUH/9k=
 @deco.ignore_botself
 @deco.these_msgtypes("XmlMsg")
 async def receive_group_msg(ctx: GroupMsg):
-    if info := re.findall(r"(https://b23\.tv/\w*)", ctx.Content):
-        try:
-            img_url = ctx.Content.split("\"")[24].replace('\\', '')
-            content = requests.request("get", img_url).content
-            with BytesIO() as bf:
-                image = Image.open(BytesIO(content))
-                image.save(bf, format="JPEG")
-                img = base64.b64encode(bf.getvalue()).decode()
+    # if ctx.FromGroupId != 597124136:
+    if ctx.FromGroupId != 953219612:
+        if info := re.findall(r"(https://b23\.tv/\w*)", ctx.Content):
+            try:
+                img_url = ctx.Content.split("\"")[24].replace('\\', '')
+                content = requests.request("get", img_url).content
+                with BytesIO() as bf:
+                    image = Image.open(BytesIO(content))
+                    image.save(bf, format="JPEG")
+                    img = base64.b64encode(bf.getvalue()).decode()
 
-            await S.bind(ctx).aimage(
-                img,
-                info[0],
-                type=S.TYPE_BASE64,
-            )
-        except:
-            await S.bind(ctx).atext(info[0])
+                await S.bind(ctx).aimage(
+                    img,
+                    info[0],
+                    type=S.TYPE_BASE64,
+                )
+            except:
+                await S.bind(ctx).atext(info[0])
