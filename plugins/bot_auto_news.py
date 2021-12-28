@@ -41,42 +41,31 @@ def get_news():
             image.save(bf, format="JPEG")
             img = base64.b64encode(bf.getvalue()).decode()
             logger.info("获取早报成功！")
-            
+
             return img
 
 
-# def send_news():
-#     action = Action(qq=461505108)
-#     img = get_news()
-#     try:
-#         action.sendGroupPic(544830164, content="#今日早报#", picBase64Buf=img)
-#         action.sendGroupPic(257069779, content="#今日早报#", picBase64Buf=img)
-#         # action.sendGroupPic(953219612, content="#今日早报#", picBase64Buf=img)
-#         action.sendGroupPic(554262929, content="#今日早报#", picBase64Buf=img)
-#         action.sendFriendPic(2311366525, content="#今日早报#", picBase64Buf=img)
-#         del action
-#         logger.info("发送早报成功！")
-#     except:
-#         logger.info("发送早报失败！")
-
-
 def send_news():
-    action = Action(qq=461505108)
     img = get_news()
-    groups = [257069779, 544830164, 554262929]
+    action = Action(qq=jconfig.bot)
+    groups_tmp = action.getGroupList()
+    groups = []
+    for group in groups_tmp:
+        groups.append(group['GroupId'])
+
     try:
         for group in groups:
             try:
-                action.sendGroupPic(int(group), content="#今日早报#", picBase64Buf=img)
+                action.sendGroupPic(group, content="#今日早报#", picBase64Buf=img)
                 logger.info("发送"+str(group)+"早报成功！")
             except:
                 time.sleep(5)
                 logger.info("发送"+str(group)+"延时操作！")
-                action.sendGroupPic(int(group), content="#今日早报#", picBase64Buf=img)
-                
-        action.sendFriendPic(2311366525, content="#今日早报#", picBase64Buf=img)
-        
-        del action
+                action.sendGroupPic(group, content="#今日早报#", picBase64Buf=img)
+
+        action.sendFriendPic(jconfig.superAdmin,
+                             content="#今日早报#", picBase64Buf=img)
+
         logger.info("发送早报成功！")
     except:
         logger.info("发送早报失败！")

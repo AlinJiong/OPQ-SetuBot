@@ -1,7 +1,6 @@
 import datetime
 import time
 
-import cpuinfo
 import psutil
 from botoy import S
 from botoy import async_decorators as deco
@@ -42,10 +41,10 @@ class SearchNews:
                 return img
 
 
-# @deco.ignore_botself
-# @deco.equal_content("早报")
-# async def receive_group_msg(_):
-#     await S.aimage(SearchNews.get_news(),  type=S.TYPE_BASE64)
+@deco.ignore_botself
+@deco.equal_content("早报")
+async def receive_group_msg(_):
+    await S.aimage(SearchNews.get_news(),  type=S.TYPE_BASE64)
 
 
 @deco.ignore_botself
