@@ -87,7 +87,7 @@ def send_news_to_one():
 job1 = scheduler.add_job(
     send_news, 'cron', hour=9, minute=0)
 
-job2 = scheduler.add_job(send_news_to_one, 'cron', hour=11, minute=0)
+job2 = scheduler.add_job(send_news_to_one, 'cron', hour=7, minute=0)
 
 # 西科 544830164
 # ac 257069779
