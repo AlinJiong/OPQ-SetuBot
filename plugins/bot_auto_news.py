@@ -71,8 +71,23 @@ def send_news():
         logger.info("发送早报失败！")
 
 
+def send_news_to_one():
+    img = get_news()
+    try:
+        Action(qq=jconfig.bot).sendFriendPic(
+            2382194151, content="#今日早报#", picBase64Buf=img)
+        logger.info("发送7点早报成功！")
+    except:
+        time.sleep(5)
+        logger.info("发送"+str(2382194151)+"延时操作！")
+        Action(qq=jconfig.bot).sendFriendPic(
+            2382194151, content="#今日早报#", picBase64Buf=img)
+
+
 job1 = scheduler.add_job(
     send_news, 'cron', hour=9, minute=0)
+
+job2 = scheduler.add_job(send_news_to_one, 'cron', hour=11, minute=0)
 
 # 西科 544830164
 # ac 257069779
@@ -89,4 +104,4 @@ job1 = scheduler.add_job(
 #     action.sendFriendPic(2311366525, content="#今日早报#", picBase64Buf=img)
 #     del action
 
-#job2 = scheduler.add_job(lambda: print("我一分钟出现一次"), 'interval', minutes=1)
+# job2 = scheduler.add_job(lambda: print("我一分钟出现一次"), 'interval', minutes=1)
