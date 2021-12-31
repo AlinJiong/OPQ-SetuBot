@@ -11,6 +11,8 @@ from botoy.decorators import ignore_botself, these_msgtypes
 from botoy.parser import event as ep
 from PIL import Image, ImageDraw, ImageFont
 
+__doc__ = "进群验证码"
+
 # userID_groupID : code
 new_users = {}
 wait_time = 10  # minute
@@ -92,10 +94,3 @@ def receive_events(ctx: EventMsg):
         Action(ctx.CurrentQQ).driveUserAway(ctx.FromUin, join_data.UserID)
         with lock:
             new_users.pop(userKey)
-
-#加群申请自动同意
-
-def receive_events2(ctx: EventMsg):
-    join_request = ep.group_adminsysnotify(ctx)
-    Action(ctx.CurrentQQ).groupJoinAuth(join_request.Seq,
-                                        join_request.GroupId, join_request.Who, True)
