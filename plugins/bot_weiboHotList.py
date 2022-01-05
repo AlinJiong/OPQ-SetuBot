@@ -5,7 +5,7 @@ from botoy.decorators import equal_content, ignore_botself
 from botoy.session import SessionHandler, ctx, session
 import gc
 
-__doc__ = "获取 微博/知乎热搜 "
+__doc__ = "获取 微博热搜 "
 
 
 def get_HotList(choice: str = 'weibo'):
@@ -31,7 +31,7 @@ search_handler = SessionHandler(
     equal_content("微博热搜"),
     single_user=True,
     expiration=1 * 30,
-).receive_group_msg()
+).receive_group_msg().receive_friend_msg()
 
 
 @search_handler.handle
@@ -51,26 +51,3 @@ def _():
             search_handler.finish()
 
 
-search_handler1 = SessionHandler(
-    ignore_botself,
-    equal_content("知乎热搜"),
-    single_user=True,
-    expiration=1 * 30,
-).receive_group_msg()
-
-
-@search_handler1.handle
-def _():
-    data, content = get_HotList("zhihu")
-    session.send_text(content+"30s内回复数字查看对应知乎热搜！")
-
-    while True:
-        word = session.pop("word", wait=True, timeout=30)
-
-        if str(word).isdigit():
-            session.send_text(data[int(word)]['link'])
-        else:
-            del data, content
-            gc.collect()
-            logger.info('查询知乎热搜结束')
-            search_handler.finish()
