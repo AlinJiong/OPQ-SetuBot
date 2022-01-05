@@ -22,25 +22,24 @@ from httpx_socks import AsyncProxyTransport
 import requests
 
 
-class SearchNews:
 
-    def get_news():
-        url = "https://v2.alapi.cn/api/dog"
-        payload = "token=EFolx1cxAdqqSWqy&format=json"
-        headers = {'Content-Type': "application/x-www-form-urlencoded"}
-        response = requests.request("POST", url, data=payload, headers=headers)
-        text_to_dic = json.loads(response.text)
-        content = text_to_dic['data']['content']
-        return content
+def get_news():
+    url = "https://v2.alapi.cn/api/dog"
+    payload = "token=EFolx1cxAdqqSWqy&format=json"
+    headers = {'Content-Type': "application/x-www-form-urlencoded"}
+    response = requests.request("POST", url, data=payload, headers=headers)
+    text_to_dic = json.loads(response.text)
+    content = text_to_dic['data']['content']
+    return content
 
 
 @deco.ignore_botself
 @deco.in_content("舔狗日记")
 async def receive_group_msg(_):
-    await S.atext(SearchNews.get_news())
+    await S.atext(get_news())
 
 
 @deco.ignore_botself
 @deco.in_content("舔狗日记")
 async def receive_friend_msg(_):
-    await S.atext(SearchNews.get_news())
+    await S.atext(get_news())
