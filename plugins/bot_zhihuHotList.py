@@ -58,10 +58,10 @@ def get_HotList(choice: str = 'weibo'):
 @decorators.ignore_botself
 @deco.equal_content("知乎热搜")
 async def receive_group_msg(_):
-    await S.atext(get_HotList())
+    await S.atext(get_HotList("zhihu"))
 
 
 @deco.ignore_botself
 @deco.equal_content("知乎热搜")
 async def receive_friend_msg(_):
-    await S.atext(get_HotList())
+    await S.atext(get_HotList("zhihu"))
