@@ -10,7 +10,7 @@
   "blocked_users": [],
   "webhook": false,
   "webhook_post_url": "http://127.0.0.1:5000",
-  "webhook_timeout": 20,
+  "webhook_timeout": 60,
   "apscheduler_autostart": true,
   "apscheduler_log_level": 30,
   "apscheduler_config": {
