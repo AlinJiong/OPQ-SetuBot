@@ -55,7 +55,7 @@ def get_HotList(choice: str = 'weibo'):
 #             search_handler1.finish()
 
 
-@decorators.ignore_botself
+@deco.ignore_botself
 @deco.equal_content("知乎热搜")
 async def receive_group_msg(_):
     await S.atext(get_HotList("zhihu"))
