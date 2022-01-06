@@ -5,7 +5,7 @@ from botoy.decorators import equal_content, ignore_botself
 from botoy.session import SessionHandler, ctx, session
 import gc
 
-__doc__ = "获取 微博热搜 "
+__doc__ = "发送 微博热搜 获取信息"
 
 
 def get_HotList(choice: str = 'weibo'):
@@ -18,7 +18,7 @@ def get_HotList(choice: str = 'weibo'):
     text_to_dic = json.loads(response.text)
     data = text_to_dic['data']['list']
 
-    content = ""
+    content = "#实时微博热搜：\n"
 
     for i in range(0, 10):
         content += str(i)+'.' + data[i]['title']+'\n'
@@ -49,5 +49,3 @@ def _():
             gc.collect()
             logger.info('查询微博热搜结束')
             search_handler.finish()
-
-
