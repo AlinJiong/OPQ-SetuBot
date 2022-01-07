@@ -65,8 +65,8 @@ def get_HotList(choice: str = 'weibo'):
     action.sendGroupText(257069779, content)
     action.sendFriendText(jconfig.superAdmin, content)
 
-    del content
-    gc.collect()
+    # del content
+    # gc.collect()
 
     return content
 
