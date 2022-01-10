@@ -35,7 +35,7 @@ def get_news():
     response = requests.request("POST", url, data=payload, headers=headers)
     text_to_dic = json.loads(response.text)
     img_url = text_to_dic['data']['image']
-    content = httpx.get(img_url).content
+    content = requests.get(img_url).content
 
     with BytesIO() as bf:
         image = Image.open(BytesIO(content))

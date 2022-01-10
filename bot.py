@@ -47,6 +47,13 @@ def friend_ctx_middleware(ctx: FriendMsg):
 @equal_content("帮助")
 def help(_):
     Text(bot.plugMgr.help)
+    
+
+@bot.on_friend_msg
+@ignore_botself
+@equal_content("帮助")
+def help(_):
+    Text(bot.plugMgr.help)
 
 
 if __name__ == "__main__":

@@ -31,9 +31,8 @@ def get_news():
     text_to_dic = json.loads(response.text)
     img_url = text_to_dic['data']['image']
 
-    with httpx.Client() as client:
-        content = client.get(img_url).content
-        
+    content = requests.get(img_url).content
+
     with BytesIO() as bf:
         image = Image.open(BytesIO(content))
         if image.format == 'WEBP':

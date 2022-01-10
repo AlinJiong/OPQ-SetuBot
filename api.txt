@@ -6,6 +6,8 @@ sau：
 gitter：
 0c932705b79bff1d6bb7b3cf13baceb114c9578a
 
+e7b89449b2339d4ddcb9a43c08b088c922eab436
+
 1、踩过的坑
 python安装依赖、Python环境依赖没安装，导致有三个包安装不上
 2、没提前运行bot
