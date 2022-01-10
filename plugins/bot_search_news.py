@@ -23,7 +23,6 @@ from httpx_socks import AsyncProxyTransport
 import requests
 
 
-
 def get_news():
     url = "https://v2.alapi.cn/api/zaobao"
     payload = "token=EFolx1cxAdqqSWqy&format=json"
@@ -32,7 +31,9 @@ def get_news():
     text_to_dic = json.loads(response.text)
     img_url = text_to_dic['data']['image']
 
-    content = httpx.get(img_url).content
+    with httpx.Client() as client:
+        content = client.get(img_url).content
+        
     with BytesIO() as bf:
         image = Image.open(BytesIO(content))
         if image.format == 'WEBP':
@@ -45,7 +46,7 @@ def get_news():
 @deco.equal_content("早报")
 async def receive_group_msg(ctx: GroupMsg):
     Action(ctx.CurrentQQ).sendGroupPic(ctx.FromGroupId,
-                                         content="#今日早报#", picBase64Buf=get_news())
+                                       content="#今日早报#", picBase64Buf=get_news())
     logger.info(f'向群：{ctx.FromGroupId} 发送早报')
 
 
@@ -53,5 +54,5 @@ async def receive_group_msg(ctx: GroupMsg):
 @deco.equal_content("早报")
 async def receive_friend_msg(ctx: FriendMsg):
     Action(ctx.CurrentQQ).sendFriendPic(ctx.FromUin,
-                                         content="#今日早报#", picBase64Buf=get_news())
+                                        content="#今日早报#", picBase64Buf=get_news())
     logger.info(f'向好友：{ctx.FromUin} 发送早报')
