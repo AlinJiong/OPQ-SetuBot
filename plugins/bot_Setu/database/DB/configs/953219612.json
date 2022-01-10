@@ -24,7 +24,7 @@
             "temp": 10
         },
         "revokeTime": {
-            "group": 20,
+            "group": 0,
             "temp": 0
         }
     },
