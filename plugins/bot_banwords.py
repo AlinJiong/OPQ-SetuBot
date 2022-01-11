@@ -13,10 +13,11 @@ patten = "(.*lunwen.*|.*论文.*|.*论wen.*|.*lun文.*)"
 
 @deco.ignore_botself
 @deco.on_regexp(patten)
-def receive_group_msg(ctx: GroupMsg):
+async def receive_group_msg(ctx: GroupMsg):
+    
     Action(ctx.CurrentQQ).revokeGroupMsg(
-            group=ctx.FromGroupId,
-            msgSeq=ctx.MsgSeq,
-            msgRandom=ctx.MsgRandom,
-        )
+        group=ctx.FromGroupId,
+        msgSeq=ctx.MsgSeq,
+        msgRandom=ctx.MsgRandom,
+    )
     Action(ctx.CurrentQQ).driveUserAway(ctx.FromGroupId, ctx.FromUserId)
