@@ -59,6 +59,7 @@ def send_news():
         for group in groups:
             try:
                 action.sendGroupPic(group, content="#今日早报#", picBase64Buf=img)
+                time.sleep(3)
                 logger.info("发送"+str(group)+"早报成功！")
             except:
                 time.sleep(5)
@@ -72,8 +73,8 @@ def send_news():
     except:
         logger.info("发送早报失败！")
 
-    # del img, groups_tmp, groups, action
-    # gc.collect()
+    del img, groups_tmp, groups, action
+    gc.collect()
 
 
 def send_news_to_one():
@@ -87,8 +88,8 @@ def send_news_to_one():
         logger.info("发送"+str(2382194151)+"延时操作！")
         Action(qq=jconfig.bot).sendFriendPic(
             2382194151, content="#今日早报#", picBase64Buf=img)
-    # del img
-    # gc.collect()
+    del img
+    gc.collect()
 
 
 job1 = scheduler.add_job(
