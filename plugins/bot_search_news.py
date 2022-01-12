@@ -23,37 +23,52 @@ from httpx_socks import AsyncProxyTransport
 import requests
 
 
-def get_news():
+async def get_news():
     url = "https://v2.alapi.cn/api/zaobao"
     payload = "token=EFolx1cxAdqqSWqy&format=json"
     headers = {'Content-Type': "application/x-www-form-urlencoded"}
-    response = requests.request("POST", url, data=payload, headers=headers)
-    text_to_dic = json.loads(response.text)
-    img_url = text_to_dic['data']['image']
+    async with httpx.AsyncClient() as client:
+        response = await client.post(url, data=payload, headers=headers)
+        text_to_dic = json.loads(response.text)
+        img_url = text_to_dic['data']['image']
+        content = await client.get(img_url)
+        content = content.content
+        with BytesIO() as bf:
+            image = Image.open(BytesIO(content))
+            if image.format == 'WEBP':
+                image.save(bf, format="JPEG")
+                img = base64.b64encode(bf.getvalue()).decode()
+                return img
 
-    content = requests.get(img_url).content
 
-    with BytesIO() as bf:
-        image = Image.open(BytesIO(content))
-        if image.format == 'WEBP':
-            image.save(bf, format="JPEG")
-            img = base64.b64encode(bf.getvalue()).decode()
-            return img
+
+# @deco.ignore_botself
+# @deco.equal_content("早报")
+# async def receive_group_msg(ctx: GroupMsg):
+#     await S.bind(ctx).aimage(get_news(), text='#今日早报#', type=S.TYPE_BASE64)
+#     # Action(ctx.CurrentQQ).sendGroupPic(ctx.FromGroupId,
+#     #                                    content="#今日早报#", picBase64Buf=get_news())
+#     logger.info(f'向群：{ctx.FromGroupId} 发送早报')
+
+
+# @deco.ignore_botself
+# @deco.equal_content("早报")
+# async def receive_friend_msg(ctx: FriendMsg):
+#     # Action(ctx.CurrentQQ).sendFriendPic(ctx.FromUin,
+#     #                                     content="#今日早报#", picBase64Buf=get_news())
+#     await S.bind(ctx).aimage(get_news(), text='#今日早报#', type=S.TYPE_BASE64)
+#     logger.info(f'向好友：{ctx.FromUin} 发送早报')
 
 
 @deco.ignore_botself
 @deco.equal_content("早报")
-async def receive_group_msg(ctx: GroupMsg):
-    await S.bind(ctx).aimage(get_news(), text='#今日早报#', type=S.TYPE_BASE64)
-    # Action(ctx.CurrentQQ).sendGroupPic(ctx.FromGroupId,
-    #                                    content="#今日早报#", picBase64Buf=get_news())
-    logger.info(f'向群：{ctx.FromGroupId} 发送早报')
+async def receive_group_msg(_):
+    img = await get_news()
+    await S.aimage(img, text='#今日早报#', type=S.TYPE_BASE64)
 
 
 @deco.ignore_botself
 @deco.equal_content("早报")
-async def receive_friend_msg(ctx: FriendMsg):
-    # Action(ctx.CurrentQQ).sendFriendPic(ctx.FromUin,
-    #                                     content="#今日早报#", picBase64Buf=get_news())
-    await S.bind(ctx).aimage(get_news(), text='#今日早报#', type=S.TYPE_BASE64)
-    logger.info(f'向好友：{ctx.FromUin} 发送早报')
+async def receive_friend_msg(_):
+    img = await get_news()
+    await S.aimage(img, text='#今日早报#', type=S.TYPE_BASE64)
