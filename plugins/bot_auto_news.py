@@ -22,33 +22,34 @@ from httpx_socks import AsyncProxyTransport
 import requests
 
 from botoy import Action
+from botoy import AsyncAction
 
 import gc
 
 __doc__ = "自动发送早报"
 
 
-def get_news():
+async def get_news():
     url = "https://v2.alapi.cn/api/zaobao"
     payload = "token=EFolx1cxAdqqSWqy&format=json"
     headers = {'Content-Type': "application/x-www-form-urlencoded"}
-    response = requests.request("POST", url, data=payload, headers=headers)
-    text_to_dic = json.loads(response.text)
-    img_url = text_to_dic['data']['image']
-    content = requests.get(img_url).content
+    async with httpx.AsyncClient() as client:
+        response = await client.post(url, data=payload, headers=headers)
+        text_to_dic = json.loads(response.text)
+        img_url = text_to_dic['data']['image']
+        content = await client.get(img_url)
+        content = content.content
+        with BytesIO() as bf:
+            image = Image.open(BytesIO(content))
+            if image.format == 'WEBP':
+                image.save(bf, format="JPEG")
+                img = base64.b64encode(bf.getvalue()).decode()
+                logger.info("获取早报成功！")
+                return img
 
-    with BytesIO() as bf:
-        image = Image.open(BytesIO(content))
-        if image.format == 'WEBP':
-            image.save(bf, format="JPEG")
-            img = base64.b64encode(bf.getvalue()).decode()
-            logger.info("获取早报成功！")
 
-            return img
-
-
-def send_news():
-    img = get_news()
+async def send_news():
+    img = await get_news()
     action = Action(qq=jconfig.bot)
     groups_tmp = action.getGroupList()
     groups = []
@@ -62,9 +63,7 @@ def send_news():
                 time.sleep(3)
                 logger.info("发送"+str(group)+"早报成功！")
             except:
-                time.sleep(5)
-                logger.info("发送"+str(group)+"延时操作！")
-                action.sendGroupPic(group, content="#今日早报#", picBase64Buf=img)
+                pass
 
         action.sendFriendPic(jconfig.superAdmin,
                              content="#今日早报#", picBase64Buf=img)
@@ -77,25 +76,22 @@ def send_news():
     gc.collect()
 
 
-def send_news_to_one():
-    img = get_news()
+async def send_news_to_one():
+    img = await get_news()
     try:
         Action(qq=jconfig.bot).sendFriendPic(
-            2382194151, content="#今日早报#", picBase64Buf=img)
+            jconfig.superAdmin, content="#今日早报#", picBase64Buf=img)
         logger.info("发送7点早报成功！")
     except:
-        time.sleep(5)
-        logger.info("发送"+str(2382194151)+"延时操作！")
-        Action(qq=jconfig.bot).sendFriendPic(
-            2382194151, content="#今日早报#", picBase64Buf=img)
+        pass
     del img
     gc.collect()
 
 
-job1 = scheduler.add_job(
+job1 = async_scheduler.add_job(
     send_news, 'cron', hour=9, minute=0)
 
-job2 = scheduler.add_job(send_news_to_one, 'cron', hour=7, minute=0)
+job2 = async_scheduler.add_job(send_news_to_one, 'cron', hour=7, minute=0)
 
 # 西科 544830164
 # ac 257069779

@@ -6,28 +6,29 @@ from botoy.decorators import equal_content, ignore_botself
 from botoy.session import SessionHandler, ctx, session
 import gc
 from botoy import async_decorators as deco
-
+import httpx
 
 __doc__ = "发送 知乎热搜 获取热搜信息"
 
 
-def get_HotList(choice: str = 'weibo'):
-    "获取微博热搜"
+async def get_HotList(choice: str = 'zhihu'):
+    "获取知乎热搜"
     url = "https://v2.alapi.cn/api/tophub/get"
     payload = "token=EFolx1cxAdqqSWqy&type=" + choice
     headers = {'Content-Type': "application/x-www-form-urlencoded"}
-    response = requests.request("POST", url, data=payload, headers=headers)
+    async with httpx.AsyncClient() as client:
+        response = await client.post(url, data=payload, headers=headers)
+        text_to_dic = json.loads(response.text)
+        data = text_to_dic['data']['list']
 
-    text_to_dic = json.loads(response.text)
-    data = text_to_dic['data']['list']
+        content = "#实时知乎热搜#\n"
 
-    content = "#知乎热搜如下：\n"
+        for i in range(0, 10):
+            content += str(i)+'.' + data[i]['title'] + \
+                '\n' + data[i]['link'] + '\n'
 
-    for i in range(0, 10):
-        content += str(i)+'.' + data[i]['title'] + \
-            '\n' + data[i]['link'] + '\n'
+        return content
 
-    return content
 
 # 对话式发送
 # search_handler1 = SessionHandler(
@@ -58,10 +59,16 @@ def get_HotList(choice: str = 'weibo'):
 @deco.ignore_botself
 @deco.equal_content("知乎热搜")
 async def receive_group_msg(_):
-    await S.atext(get_HotList("zhihu"))
+    zhihu = get_HotList()
+    await S.atext(zhihu)
+    del zhihu
+    gc.collect()
 
 
 @deco.ignore_botself
 @deco.equal_content("知乎热搜")
 async def receive_friend_msg(_):
-    await S.atext(get_HotList("zhihu"))
+    zhihu = get_HotList()
+    await S.atext(zhihu)
+    del zhihu
+    gc.collect()

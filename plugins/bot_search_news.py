@@ -21,6 +21,7 @@ from botoy.parser import friend as fp
 from botoy.parser import group as gp
 from httpx_socks import AsyncProxyTransport
 import requests
+import gc
 
 
 async def get_news():
@@ -65,6 +66,8 @@ async def get_news():
 async def receive_group_msg(_):
     img = await get_news()
     await S.aimage(img, text='#今日早报#', type=S.TYPE_BASE64)
+    del img
+    gc.collect()
 
 
 @deco.ignore_botself
@@ -72,3 +75,5 @@ async def receive_group_msg(_):
 async def receive_friend_msg(_):
     img = await get_news()
     await S.aimage(img, text='#今日早报#', type=S.TYPE_BASE64)
+    del img
+    gc.collect()
