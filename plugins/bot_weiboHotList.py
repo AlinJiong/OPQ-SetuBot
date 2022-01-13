@@ -5,18 +5,21 @@ from botoy.decorators import equal_content, ignore_botself
 from botoy.session import SessionHandler, ctx, session
 import gc
 import httpx
+from botoy.contrib import sync_run
 
 __doc__ = "发送 微博热搜 获取信息"
 
 
-def get_HotList(choice: str = 'weibo'):
+async def get_HotList(choice: str = 'weibo'):
     "获取微博热搜"
     url = "https://v2.alapi.cn/api/tophub/get"
     payload = "token=EFolx1cxAdqqSWqy&type=" + choice
     headers = {'Content-Type': "application/x-www-form-urlencoded"}
-    response = requests.post(url, data=payload, headers=headers)
-    text_to_dic = json.loads(response.text)
-    data = text_to_dic['data']['list']
+
+    async with httpx.AsyncClient() as client:
+        response = await client.post(url, data=payload, headers=headers)
+        text_to_dic = json.loads(response.text)
+        data = text_to_dic['data']['list']
 
     content = "#实时微博热搜#\n"
 
@@ -36,7 +39,7 @@ search_handler = SessionHandler(
 
 @search_handler.handle
 def WbHostList():
-    data, content = get_HotList()
+    data, content = sync_run(get_HotList())
     session.send_text(content+"30s内回复数字查看对应微博热搜！")
 
     while True:

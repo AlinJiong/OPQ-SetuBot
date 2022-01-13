@@ -12,6 +12,9 @@ import urllib.parse
 from botoy import async_decorators as deco
 from botoy import Action
 
+import httpx
+from botoy.contrib import sync_run
+
 __doc__ = "自动推送 微博热搜 早9点，晚7点"
 
 
@@ -20,7 +23,7 @@ def url_encode(url: str):
     return urllib.parse.quote(url, encoding="utf-8")
 
 
-def long_to_short(url: str):
+async def long_to_short(url: str):
     "长链接转短链接"
     api_url = "http://api.suowo.cn/api.htm?url="
 
@@ -35,34 +38,41 @@ def long_to_short(url: str):
 
     url = api_url + origin_url+'&key=' + \
         key+'&expireDate='+expireDate+'&domain=5'
-    # print(url)
-    response = requests.request("GET", url)
 
-    if len(str(response.text)) == 0 or len(str(response.text)) > 40:
-        return url
+    async with httpx.AsyncClient() as client:
+        response = await client.get(url)
+        # print(response.text)
+        if len(str(response.text)) == 0 or len(str(response.text)) > 40:
+            return url
 
+    # logger.info('long to short')
     return str(response.text)
 
 
-def get_HotList(choice: str = 'weibo'):
+async def get_HotList(choice: str = 'weibo'):
     "获取微博热搜"
     url = "https://v2.alapi.cn/api/tophub/get"
     payload = "token=EFolx1cxAdqqSWqy&type=" + choice
     headers = {'Content-Type': "application/x-www-form-urlencoded"}
-    response = requests.request("POST", url, data=payload, headers=headers)
 
-    text_to_dic = json.loads(response.text)
-    data = text_to_dic['data']['list']
+    async with httpx.AsyncClient() as client:
+        response = await client.post(url, data=payload, headers=headers)
+        text_to_dic = json.loads(response.text)
+        data = text_to_dic['data']['list']
+        # logger.info(data[0]['link'])
 
-    content = "#实时微博热搜：\n"
+    content = "#实时微博热搜#\n"
 
     for i in range(0, 10):
+        link = await long_to_short(data[i]['link'])
+        logger.info(link)
         content += str(i)+'.' + data[i]['title'] + \
-            '\n' + long_to_short(data[i]['link'])+'\n'
+            '\n' + link + '\n'
         time.sleep(3)
 
     action = Action(qq=jconfig.bot)
     action.sendGroupText(257069779, content)
+    time.sleep(5)
     action.sendFriendText(jconfig.superAdmin, content)
 
     del content, action
@@ -81,10 +91,14 @@ def get_HotList(choice: str = 'weibo'):
 # @deco.ignore_botself
 # @deco.equal_content("测试")
 # async def receive_friend_msg(_):
-#     await S.atext("长链接转短链接中，请稍后！")
-#     await S.atext(get_HotList())
+#     HotList = await get_HotList()
+#     await S.atext(HotList)
 
 
-job1 = scheduler.add_job(get_HotList, 'cron', hour=9, minute=5)
+def func1():
+    sync_run(get_HotList())
 
-job2 = scheduler.add_job(get_HotList, 'cron', hour=19, minute=0)
+
+job1 = scheduler.add_job(func1, 'cron', hour=9, minute=5)
+
+job2 = scheduler.add_job(func1, 'cron', hour=19, minute=0)
