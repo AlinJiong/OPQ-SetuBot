@@ -59,7 +59,7 @@ async def get_HotList(choice: str = 'zhihu'):
 @deco.ignore_botself
 @deco.equal_content("知乎热搜")
 async def receive_group_msg(_):
-    zhihu = get_HotList()
+    zhihu = await get_HotList()
     await S.atext(zhihu)
     del zhihu
     gc.collect()
@@ -68,7 +68,7 @@ async def receive_group_msg(_):
 @deco.ignore_botself
 @deco.equal_content("知乎热搜")
 async def receive_friend_msg(_):
-    zhihu = get_HotList()
+    zhihu = await get_HotList()
     await S.atext(zhihu)
     del zhihu
     gc.collect()

@@ -9,23 +9,22 @@ import httpx
 __doc__ = "发送 微博热搜 获取信息"
 
 
-async def get_HotList(choice: str = 'weibo'):
+def get_HotList(choice: str = 'weibo'):
     "获取微博热搜"
     url = "https://v2.alapi.cn/api/tophub/get"
     payload = "token=EFolx1cxAdqqSWqy&type=" + choice
     headers = {'Content-Type': "application/x-www-form-urlencoded"}
-    async with httpx.AsyncClient() as client:
-        response = await client.post(url, data=payload, headers=headers)
-        text_to_dic = json.loads(response.text)
-        data = text_to_dic['data']['list']
+    response = requests.post(url, data=payload, headers=headers)
+    text_to_dic = json.loads(response.text)
+    data = text_to_dic['data']['list']
 
-        content = "#实时微博热搜#\n"
+    content = "#实时微博热搜#\n"
 
-        for i in range(0, 10):
-            content += str(i)+'.' + data[i]['title'] + \
-                '\n' + data[i]['link'] + '\n'
+    for i in range(0, 10):
+        content += str(i)+'.' + data[i]['title'] + \
+            '\n' + data[i]['link'] + '\n'
 
-        return data, content
+    return data, content
 
 
 search_handler = SessionHandler(
@@ -37,8 +36,8 @@ search_handler = SessionHandler(
 
 
 @search_handler.handle
-async def WbHostList():
-    data, content = await get_HotList()
+def WbHostList():
+    data, content = get_HotList()
     session.send_text(content+"30s内回复数字查看对应微博热搜！")
 
     while True:
