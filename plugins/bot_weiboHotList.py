@@ -21,8 +21,7 @@ def get_HotList(choice: str = 'weibo'):
     content = "#实时微博热搜#\n"
 
     for i in range(0, 10):
-        content += str(i)+'.' + data[i]['title'] + \
-            '\n' + data[i]['link'] + '\n'
+        content += str(i)+'.' + data[i]['title']+'\n'
 
     return data, content
 

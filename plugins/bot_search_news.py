@@ -42,7 +42,6 @@ async def get_news():
                 return img
 
 
-
 # @deco.ignore_botself
 # @deco.equal_content("早报")
 # async def receive_group_msg(ctx: GroupMsg):
@@ -63,17 +62,22 @@ async def get_news():
 
 @deco.ignore_botself
 @deco.equal_content("早报")
-async def receive_group_msg(_):
+async def receive_group_msg(ctx: GroupMsg):
     img = await get_news()
-    await S.aimage(img, text='#今日早报#', type=S.TYPE_BASE64)
+    Action(ctx.CurrentQQ).sendGroupPic(ctx.FromGroupId,
+                                       content="#今日早报#", picBase64Buf=get_news())
+    logger.info(f'向群：{ctx.FromGroupId} 发送早报')
     del img
     gc.collect()
 
 
 @deco.ignore_botself
 @deco.equal_content("早报")
-async def receive_friend_msg(_):
+async def receive_friend_msg(ctx: FriendMsg):
     img = await get_news()
-    await S.aimage(img, text='#今日早报#', type=S.TYPE_BASE64)
+    Action(ctx.CurrentQQ).sendFriendPic(
+        ctx.FromUin, content="#今日早报#", picBase64Buf=img)
+
+    logger.info(f'向好友：{ctx.FromUin} 发送早报')
     del img
     gc.collect()
