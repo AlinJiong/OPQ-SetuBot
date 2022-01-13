@@ -23,6 +23,8 @@ import requests
 
 from botoy import Action
 from botoy import AsyncAction
+from botoy.contrib import sync_run
+
 
 import gc
 
@@ -79,8 +81,7 @@ async def send_news():
 async def send_news_to_one():
     img = await get_news()
     try:
-        Action(qq=jconfig.bot).sendFriendPic(
-            jconfig.superAdmin, content="#今日早报#", picBase64Buf=img)
+        Action(qq=jconfig.bot).sendFriendPic(2382194151, content="#今日早报#", picBase64Buf=img)
         logger.info("发送7点早报成功！")
     except:
         pass
@@ -88,10 +89,17 @@ async def send_news_to_one():
     gc.collect()
 
 
-job1 = async_scheduler.add_job(
-    send_news, 'cron', hour=9, minute=0)
+def fun1():
+    sync_run(send_news())
 
-job2 = async_scheduler.add_job(send_news_to_one, 'cron', hour=7, minute=0)
+
+def fun2():
+    sync_run(send_news_to_one())
+
+
+job1 = async_scheduler.add_job(fun1, 'cron', hour=9, minute=0)
+
+#job2 = scheduler.add_job(fun2, 'cron', hour=7, minute=0)
 
 # 西科 544830164
 # ac 257069779
