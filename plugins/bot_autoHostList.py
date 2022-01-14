@@ -1,4 +1,6 @@
 import datetime
+from email import header
+from random import random
 import time
 from botoy import action, decorators
 from botoy.schedule import scheduler
@@ -11,7 +13,7 @@ import gc
 import urllib.parse
 from botoy import async_decorators as deco
 from botoy import Action
-
+import random
 import httpx
 from botoy.contrib import sync_run
 
@@ -39,44 +41,59 @@ async def long_to_short(url: str):
     url = api_url + origin_url+'&key=' + \
         key+'&expireDate='+expireDate+'&domain=5'
 
+    headers = {
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/97.0.4692.71 Safari/537.36'
+    }
+
     async with httpx.AsyncClient() as client:
-        response = await client.get(url)
-        # print(response.text)
-        if len(str(response.text)) == 0 or len(str(response.text)) > 40:
+        try:
+            response = await client.get(url, headers=headers, timeout=10)
+            return str(response.text)
+        except:
+            logger.info("长链接转短链接异常！")
             return url
 
-    # logger.info('long to short')
-    return str(response.text)
+    #     if len(str(response.text)) == 0 or len(str(response.text)) > 40:
+    #         return url
+
+    # return str(response.text)
 
 
 async def get_HotList(choice: str = 'weibo'):
     "获取微博热搜"
     url = "https://v2.alapi.cn/api/tophub/get"
     payload = "token=EFolx1cxAdqqSWqy&type=" + choice
-    headers = {'Content-Type': "application/x-www-form-urlencoded"}
+    headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/97.0.4692.71 Safari/537.36',
+               'Content-Type': "application/x-www-form-urlencoded"}
 
     async with httpx.AsyncClient() as client:
-        response = await client.post(url, data=payload, headers=headers)
-        text_to_dic = json.loads(response.text)
-        data = text_to_dic['data']['list']
-        # logger.info(data[0]['link'])
+        try:
+            response = await client.post(url, data=payload, headers=headers, timeout=10)
+            text_to_dic = json.loads(response.text)
+            data = text_to_dic['data']['list']
+            # logger.info(data[0]['link'])
 
-    content = "#实时微博热搜#\n"
+            content = "#实时微博热搜#\n"
 
-    for i in range(0, 10):
-        link = await long_to_short(data[i]['link'])
-        logger.info(link)
-        content += str(i)+'.' + data[i]['title'] + \
-            '\n' + link + '\n'
-        time.sleep(3)
+            for i in range(0, 10):
+                link = await long_to_short(data[i]['link'])
+                logger.info(link)
+                content += str(i)+'.' + data[i]['title'] + \
+                    '\n' + link + '\n'
+                time.sleep(random.randint(5, 8))
 
-    action = Action(qq=jconfig.bot)
-    action.sendGroupText(257069779, content)
-    time.sleep(5)
-    action.sendFriendText(jconfig.superAdmin, content)
+            action = Action(qq=jconfig.bot)
+            action.sendGroupText(257069779, content)
+            time.sleep(5)
+            action.sendFriendText(jconfig.superAdmin, content)
 
-    del content, action
-    gc.collect()
+            del content, action
+            gc.collect()
+        except:
+            logger.info('自动获取微博热搜失败！')
+            return None
+
+ 
 
     # return content
 

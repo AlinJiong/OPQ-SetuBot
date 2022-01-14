@@ -14,19 +14,27 @@ async def get_HotList(choice: str = 'weibo'):
     "获取微博热搜"
     url = "https://v2.alapi.cn/api/tophub/get"
     payload = "token=EFolx1cxAdqqSWqy&type=" + choice
-    headers = {'Content-Type': "application/x-www-form-urlencoded"}
+    headers = {
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/97.0.4692.71 Safari/537.36',
+        'Content-Type': "application/x-www-form-urlencoded"
+    }
 
     async with httpx.AsyncClient() as client:
-        response = await client.post(url, data=payload, headers=headers)
-        text_to_dic = json.loads(response.text)
-        data = text_to_dic['data']['list']
+        try:
+            response = await client.post(url, data=payload, headers=headers, timeout=10)
 
-    content = "#实时微博热搜#\n"
+            text_to_dic = json.loads(response.text)
+            data = text_to_dic['data']['list']
 
-    for i in range(0, 10):
-        content += str(i)+'.' + data[i]['title']+'\n'
+            content = "#实时微博热搜#\n"
 
-    return data, content
+            for i in range(0, 10):
+                content += str(i)+'.' + data[i]['title']+'\n'
+
+            return data, content
+        except:
+            logger.info('获取微博热搜请求超时！')
+            return None, None
 
 
 search_handler = SessionHandler(
@@ -40,6 +48,10 @@ search_handler = SessionHandler(
 @search_handler.handle
 def WbHostList():
     data, content = sync_run(get_HotList())
+    if content == None:
+        session.send_text("网络响应超时，请稍后重试！")
+        search_handler.finish()
+
     session.send_text(content+"30s内回复数字查看对应微博热搜！")
 
     while True:

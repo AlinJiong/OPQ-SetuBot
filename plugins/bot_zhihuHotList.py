@@ -15,19 +15,26 @@ async def get_HotList(choice: str = 'zhihu'):
     "获取知乎热搜"
     url = "https://v2.alapi.cn/api/tophub/get"
     payload = "token=EFolx1cxAdqqSWqy&type=" + choice
-    headers = {'Content-Type': "application/x-www-form-urlencoded"}
+    headers = {
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/97.0.4692.71 Safari/537.36',
+        'Content-Type': "application/x-www-form-urlencoded"
+    }
+
     async with httpx.AsyncClient() as client:
-        response = await client.post(url, data=payload, headers=headers)
-        text_to_dic = json.loads(response.text)
-        data = text_to_dic['data']['list']
+        try:
+            response = await client.post(url, data=payload, headers=headers, timeout=10)
+            text_to_dic = json.loads(response.text)
+            data = text_to_dic['data']['list']
 
-        content = "#实时知乎热搜#\n"
+            content = "#实时知乎热搜#\n"
 
-        for i in range(0, 10):
-            content += str(i)+'.' + data[i]['title'] + \
-                '\n' + data[i]['link'] + '\n'
+            for i in range(0, 10):
+                content += str(i)+'.' + data[i]['title'] + \
+                    '\n' + data[i]['link'] + '\n'
 
-        return content
+            return content
+        except:
+            return None
 
 
 # 对话式发送
@@ -60,15 +67,21 @@ async def get_HotList(choice: str = 'zhihu'):
 @deco.equal_content("知乎热搜")
 async def receive_group_msg(_):
     zhihu = await get_HotList()
-    await S.atext(zhihu)
-    del zhihu
-    gc.collect()
+    if zhihu == None:
+        await S.atext("网络响应超时，请稍后重试！")
+    else:
+        await S.atext(zhihu)
+        del zhihu
+        gc.collect()
 
 
 @deco.ignore_botself
 @deco.equal_content("知乎热搜")
 async def receive_friend_msg(_):
     zhihu = await get_HotList()
-    await S.atext(zhihu)
-    del zhihu
-    gc.collect()
+    if zhihu == None:
+        await S.atext("网络响应超时，请稍后重试！")
+    else:
+        await S.atext(zhihu)
+        del zhihu
+        gc.collect()

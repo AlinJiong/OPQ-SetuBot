@@ -34,24 +34,44 @@ __doc__ = "自动发送早报"
 async def get_news():
     url = "https://v2.alapi.cn/api/zaobao"
     payload = "token=EFolx1cxAdqqSWqy&format=json"
-    headers = {'Content-Type': "application/x-www-form-urlencoded"}
+    headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/97.0.4692.71 Safari/537.36',
+               'Content-Type': "application/x-www-form-urlencoded"}
     async with httpx.AsyncClient() as client:
-        response = await client.post(url, data=payload, headers=headers)
+        try:
+            response = await client.post(url, data=payload, headers=headers, timeout=10)
+        except:
+            logger.info("早报api获取失败！")
+            return None
+        # if response.status_code != 200:
+        #     logger.info("早报获取失败！")
+        #     return None
         text_to_dic = json.loads(response.text)
         img_url = text_to_dic['data']['image']
-        content = await client.get(img_url)
-        content = content.content
-        with BytesIO() as bf:
-            image = Image.open(BytesIO(content))
-            if image.format == 'WEBP':
-                image.save(bf, format="JPEG")
-                img = base64.b64encode(bf.getvalue()).decode()
-                logger.info("获取早报成功！")
-                return img
+
+        try:
+            new_headers = {
+                'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/97.0.4692.71 Safari/537.36'
+            }
+
+            content = await client.get(img_url, headers=new_headers, timeout=10)
+            content = content.content
+            with BytesIO() as bf:
+                image = Image.open(BytesIO(content))
+                if image.format == 'WEBP':
+                    image.save(bf, format="JPEG")
+                    img = base64.b64encode(bf.getvalue()).decode()
+                    logger.info("获取早报成功！")
+                    return img
+        except:
+            logger.info("早报api转图片失败！")
+            return None
 
 
 async def send_news():
     img = await get_news()
+    if img == None:
+        return
+
     action = Action(qq=jconfig.bot)
     groups_tmp = action.getGroupList()
     groups = []
@@ -80,8 +100,11 @@ async def send_news():
 
 async def send_news_to_one():
     img = await get_news()
+    if img == None:
+        return
     try:
-        Action(qq=jconfig.bot).sendFriendPic(2382194151, content="#今日早报#", picBase64Buf=img)
+        Action(qq=jconfig.bot).sendFriendPic(
+            2382194151, content="#今日早报#", picBase64Buf=img)
         logger.info("发送7点早报成功！")
     except:
         pass
