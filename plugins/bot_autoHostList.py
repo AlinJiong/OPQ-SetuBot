@@ -1,6 +1,7 @@
 import datetime
 from email import header
 from random import random
+from socket import herror
 import time
 from botoy import action, decorators
 from botoy.schedule import scheduler
@@ -29,7 +30,7 @@ async def long_to_short(url: str):
     "长链接转短链接"
     api_url = "http://api.suowo.cn/api.htm?url="
 
-    origin_url = url_encode(url)
+    encode_url = url_encode(url)
     key = "61d6c080aee1e862935dab34@9ee40add55f5e3eb3580deb02fa3658b"
 
     # 第二天 = today + 2
@@ -38,16 +39,23 @@ async def long_to_short(url: str):
 
     expireDate = date_after.strftime("%Y-%m-%d")
 
-    url = api_url + origin_url+'&key=' + \
+    final_url = api_url+encode_url+'&key=' + \
         key+'&expireDate='+expireDate+'&domain=5'
 
-    headers = {
-        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/97.0.4692.71 Safari/537.36'
-    }
+    # headers = {
+    #     'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/97.0.4692.71 Safari/537.36'
+    # }
+
+    t = ['Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/97.0.4692.71 Safari/537.36 Edg/97.0.1072.62',
+         'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/97.0.4692.71 Safari/537.36',
+         'Mozilla/5.0 (Windows NT 10.0; Trident/7.0; rv:11.0) like Gecko']
+
+    headers = {}
+    headers['User-Agent'] = t[random.randint(0, len(t)-1)]
 
     async with httpx.AsyncClient() as client:
         try:
-            response = await client.get(url, headers=headers, timeout=10)
+            response = await client.get(final_url, headers=headers, timeout=10)
             return str(response.text)
         except:
             logger.info("长链接转短链接异常！")
@@ -85,6 +93,8 @@ async def get_HotList(choice: str = 'weibo'):
             action = Action(qq=jconfig.bot)
             action.sendGroupText(257069779, content)
             time.sleep(5)
+            action.sendGroupText(331620093, content)
+            time.sleep(3)
             action.sendFriendText(jconfig.superAdmin, content)
 
             del content, action
@@ -92,8 +102,6 @@ async def get_HotList(choice: str = 'weibo'):
         except:
             logger.info('自动获取微博热搜失败！')
             return None
-
- 
 
     # return content
 
