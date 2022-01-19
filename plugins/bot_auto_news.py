@@ -103,12 +103,24 @@ async def send_news_to_one():
     if img == None:
         return
     try:
-        Action(qq=jconfig.bot).sendFriendPic(
-            2382194151, content="#今日早报#", picBase64Buf=img)
+        action = Action(qq=jconfig.bot)
+        user_list = action.getUserList()
+        users = []
+        for user in user_list:
+            users.append(user['FriendUin'])
+
+        for user in users:
+            action.sendFriendPic(user, content="#今日早报#", picBase64Buf=img)
+            time.sleep(3)
+            logger.info(f'向好友：{user} 发送早报！')
+        # Action(qq=jconfig.bot).sendFriendPic(
+        #     2382194151, content="#今日早报#", picBase64Buf=img)
         logger.info("发送7点早报成功！")
     except:
         pass
-    del img
+
+    del img, user_list, users
+
     gc.collect()
 
 
