@@ -109,6 +109,12 @@ async def send_news_to_one():
         for user in user_list:
             users.append(user['FriendUin'])
 
+        try:
+            users.remove(jconfig.bot)
+            users.remove(jconfig.superAdmin)
+        except:
+            pass
+
         for user in users:
             action.sendFriendPic(user, content="#今日早报#", picBase64Buf=img)
             time.sleep(3)
