@@ -27,7 +27,7 @@ import gc
 
 async def get_news():
     url = "https://v2.alapi.cn/api/zaobao"
-    payload = "token=EFolx1cxAdqqSWqy&format=json"
+    payload = "token=1jfSWghgtebOjpQi&format=json"
     headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/97.0.4692.71 Safari/537.36',
                'Content-Type': "application/x-www-form-urlencoded"}
     async with httpx.AsyncClient() as client:
@@ -38,7 +38,7 @@ async def get_news():
         except:
             logger.info("早报api获取失败！")
             return None
-       
+
         try:
             new_headers = {
                 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/97.0.4692.71 Safari/537.36'

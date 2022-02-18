@@ -13,7 +13,7 @@ __doc__ = "发送 土味情话 获取"
 
 async def get_Tuwei():
     url = "https://v2.alapi.cn/api/qinghua"
-    payload = "token=EFolx1cxAdqqSWqy&format=json"
+    payload = "token=1jfSWghgtebOjpQi&format=json"
     headers = {
         'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/97.0.4692.71 Safari/537.36',
         'Content-Type': "application/x-www-form-urlencoded"

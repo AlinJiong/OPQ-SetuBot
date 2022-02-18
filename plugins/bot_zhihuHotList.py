@@ -14,7 +14,7 @@ __doc__ = "发送 知乎热搜 获取热搜信息"
 async def get_HotList(choice: str = 'zhihu'):
     "获取知乎热搜"
     url = "https://v2.alapi.cn/api/tophub/get"
-    payload = "token=EFolx1cxAdqqSWqy&type=" + choice
+    payload = "token=1jfSWghgtebOjpQi&type=" + choice
     headers = {
         'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/97.0.4692.71 Safari/537.36',
         'Content-Type': "application/x-www-form-urlencoded"

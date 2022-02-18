@@ -22,10 +22,9 @@ from httpx_socks import AsyncProxyTransport
 import requests
 
 
-
 def get_news():
     url = "https://v2.alapi.cn/api/dog"
-    payload = "token=EFolx1cxAdqqSWqy&format=json"
+    payload = "token=1jfSWghgtebOjpQi&format=json"
     headers = {'Content-Type': "application/x-www-form-urlencoded"}
     response = requests.request("POST", url, data=payload, headers=headers)
     text_to_dic = json.loads(response.text)
