@@ -17,8 +17,9 @@ def get_nums():
     today = LunarDate.today()
     lunardate = today.strftime('%L%M月%D')
 
-    Festivals_ch = ['清明', '端午节', '中秋节', '国庆节', '元旦', '春节']
-    Festivals_ch2 = ['清明节', '端午节', '中秋节', '国庆节', '元旦节', '春节']
+    Festivals_ch = ['清明', '劳动节', '端午节', '中秋节', '国庆节', '元旦', '春节']
+    Festivals_ch2 = ['清明节', '劳动节', '端午节', '中秋节', '国庆节', '元旦节', '春节']
+
     Festivals_num = []
     for festival in Festivals_ch:
         Festivals_num.append(get_festival(festival).countdown())
