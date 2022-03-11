@@ -43,7 +43,9 @@ def get_nums():
     print(s)
 
     action = Action(qq=jconfig.bot)
-    action.sendGroupText(257069779, s)
+    action.sendGroupPic(257069779,
+                        picUrl='https://api.vvhan.com/api/moyu',
+                        content=s)
 
 
 job1 = scheduler.add_job(get_nums, 'cron', hour=9, minute=10)
