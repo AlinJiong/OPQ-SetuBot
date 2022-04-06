@@ -42,11 +42,14 @@ def get_nums():
 【友情提示】三甲医院ICU躺一天平均费用大概一万块,你晚一天进ICU,就等于为你的家庭多赚一万块。少上班,多摸鱼！！！'''
 
     s = s1+s2+s3
-    print(s)
 
+    headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/97.0.4692.71 Safari/537.36',
+                'Content-Type': "application/x-www-form-urlencoded"}
 
-    content = requests.get('https://api.vvhan.com/api/moyu?type=json')
-    img_url = re.findall(r'https:.*?png', content.text)[0]
+    url = 'https://api.j4u.ink/proxy/remote/moyu.json'
+
+    content = requests.get(url, headers=headers, timeout=10)
+    img_url = re.findall(r'https:.*?png', content.text)[0].replace('\\', '')
     action = Action(qq=jconfig.bot)
     action.sendGroupPic(257069779,
                         picUrl=img_url,
