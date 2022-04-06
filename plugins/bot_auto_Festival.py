@@ -4,7 +4,9 @@ import datetime
 from botoy import Action
 from botoy import FriendMsg, GroupMsg, S, jconfig, logger
 from botoy.schedule import scheduler
-
+from sympy import im
+import requests
+import re
 __doc__ = "发送摸鱼提醒"
 
 
@@ -42,9 +44,12 @@ def get_nums():
     s = s1+s2+s3
     print(s)
 
+
+    content = requests.get('https://api.vvhan.com/api/moyu?type=json')
+    img_url = re.findall(r'https:.*?png', content.text)[0]
     action = Action(qq=jconfig.bot)
     action.sendGroupPic(257069779,
-                        picUrl='https://api.vvhan.com/api/moyu',
+                        picUrl=img_url,
                         content=s)
 
 
