@@ -93,8 +93,6 @@ async def get_HotList(choice: str = 'weibo'):
             action = Action(qq=jconfig.bot)
             action.sendGroupText(257069779, content)
             time.sleep(5)
-            action.sendGroupText(331620093, content)
-            time.sleep(3)
             action.sendFriendText(jconfig.superAdmin, content)
 
             del content, action
