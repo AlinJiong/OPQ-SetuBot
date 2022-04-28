@@ -21,41 +21,56 @@ from botoy.contrib import sync_run
 __doc__ = "自动推送 微博热搜 早9点，晚7点"
 
 
-def url_encode(url: str):
-    "链接encode"
-    return urllib.parse.quote(url, encoding="utf-8")
+# def url_encode(url: str):
+#     "链接encode"
+#     return urllib.parse.quote(url, encoding="utf-8")
 
 
-async def long_to_short(url: str):
-    "长链接转短链接"
-    api_url = "http://api.suowo.cn/api.htm?url="
+# async def long_to_short(url: str):
+#     "长链接转短链接"
+#     api_url = "http://api.suowo.cn/api.htm?url="
 
-    encode_url = url_encode(url)
-    key = "61d6c080aee1e862935dab34@9ee40add55f5e3eb3580deb02fa3658b"
+#     encode_url = url_encode(url)
+#     key = "61d6c080aee1e862935dab34@9ee40add55f5e3eb3580deb02fa3658b"
 
-    # 第二天 = today + 2
-    date_after = datetime.date.today() + datetime.timedelta(days=1)
-    # 格式转换
+#     # 第二天 = today + 2
+#     date_after = datetime.date.today() + datetime.timedelta(days=1)
+#     # 格式转换
 
-    expireDate = date_after.strftime("%Y-%m-%d")
+#     expireDate = date_after.strftime("%Y-%m-%d")
 
-    final_url = api_url+encode_url+'&key=' + \
-        key+'&expireDate='+expireDate+'&domain=5'
+#     final_url = api_url+encode_url+'&key=' + \
+#         key+'&expireDate='+expireDate+'&domain=5'
 
-    t = ['Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/97.0.4692.71 Safari/537.36 Edg/97.0.1072.62',
-         'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/97.0.4692.99 Safari/537.36',
-         'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/98.0.4758.80 Safari/537.36 Edg/98.0.1108.43']
+#     t = ['Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/97.0.4692.71 Safari/537.36 Edg/97.0.1072.62',
+#          'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/97.0.4692.99 Safari/537.36',
+#          'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/98.0.4758.80 Safari/537.36 Edg/98.0.1108.43']
 
-    headers = {}
-    headers['User-Agent'] = t[random.randint(0, len(t)-1)]
+#     headers = {}
+#     headers['User-Agent'] = t[random.randint(0, len(t)-1)]
 
-    async with httpx.AsyncClient() as client:
-        try:
-            response = await client.get(final_url, headers=headers, timeout=10)
-            return str(response.text)
-        except:
-            logger.info("长链接转短链接异常！")
-            return url
+#     async with httpx.AsyncClient() as client:
+#         try:
+#             response = await client.get(final_url, headers=headers, timeout=10)
+#             return str(response.text)
+#         except:
+#             logger.info("长链接转短链接异常！")
+#             return url
+
+
+
+async def long_to_short(origin_url: str):
+    request_url = "https://v2.alapi.cn/api/url?token=1jfSWghgtebOjpQi&url=" + \
+        origin_url+"&type=m6zcn"
+    headers = {'Content-Type': "application/x-www-form-urlencoded"}
+    try:
+        response = requests.request(
+            "GET", request_url,  headers=headers, timeout=10)
+        data = json.loads(response.text)
+        if data['code'] == 200:
+            return data['data']['short_url']
+    except:
+        return origin_url
 
 
 async def get_HotList(choice: str = 'weibo'):
@@ -95,7 +110,6 @@ async def get_HotList(choice: str = 'weibo'):
 
 def func1():
     sync_run(get_HotList())
-
 
 
 job1 = scheduler.add_job(func1, 'cron', hour=9, minute=5)
