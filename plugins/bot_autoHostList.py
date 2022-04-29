@@ -58,7 +58,6 @@ __doc__ = "自动推送 微博热搜 早9点，晚7点"
 #             return url
 
 
-
 async def long_to_short(origin_url: str):
     request_url = "https://v2.alapi.cn/api/url?token=1jfSWghgtebOjpQi&url=" + \
         origin_url+"&type=m6zcn"
@@ -85,7 +84,6 @@ async def get_HotList(choice: str = 'weibo'):
             response = await client.post(url, data=payload, headers=headers, timeout=10)
             text_to_dic = json.loads(response.text)
             data = text_to_dic['data']['list']
-            # logger.info(data[0]['link'])
 
             content = "#实时微博热搜#\n"
 
@@ -101,10 +99,9 @@ async def get_HotList(choice: str = 'weibo'):
             time.sleep(5)
             action.sendFriendText(jconfig.superAdmin, content)
 
-            del content, action
-            gc.collect()
-        except:
+        except Exception as e:
             logger.info('自动获取微博热搜失败！')
+            logger.info(e)
             return None
 
 
