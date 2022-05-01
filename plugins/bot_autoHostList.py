@@ -65,9 +65,10 @@ async def long_to_short(origin_url: str):
     try:
         response = requests.request(
             "GET", request_url,  headers=headers, timeout=10)
+        if response.status_code != 200:
+            return origin_url
         data = json.loads(response.text)
-        if data['code'] == 200:
-            return data['data']['short_url']
+        return data['data']['short_url']
     except:
         return origin_url
 
@@ -89,7 +90,6 @@ async def get_HotList(choice: str = 'weibo'):
 
             for i in range(0, 10):
                 link = await long_to_short(data[i]['link'])
-                logger.info(link)
                 content += str(i)+'.' + data[i]['title'] + \
                     '\n' + link + '\n'
                 time.sleep(random.randint(5, 8))
@@ -101,7 +101,6 @@ async def get_HotList(choice: str = 'weibo'):
 
         except Exception as e:
             logger.info('自动获取微博热搜失败！')
-            logger.info(e)
             return None
 
 
