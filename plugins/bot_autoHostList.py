@@ -95,7 +95,7 @@ async def get_HotList(choice: str = 'weibo'):
                 time.sleep(random.randint(5, 8))
 
             action = Action(qq=jconfig.bot)
-            action.sendGroupText(257069779, content)
+            action.sendGroupText(782939804, content)
             time.sleep(5)
             action.sendFriendText(jconfig.superAdmin, content)
 
@@ -150,7 +150,7 @@ job2 = scheduler.add_job(func1, 'cron', hour=19, minute=0)
 #                 time.sleep(1)
 
 #             action = Action(qq=jconfig.bot)
-#             action.sendGroupText(257069779, content)
+#             action.sendGroupText(782939804, content)
 #             time.sleep(5)
 #             action.sendFriendText(jconfig.superAdmin, content)
 

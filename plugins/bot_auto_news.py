@@ -117,7 +117,7 @@ job1 = scheduler.add_job(fun1, 'cron', hour=9, minute=0)
 job2 = scheduler.add_job(fun2, 'cron', hour=7, minute=0)
 
 # 西科 544830164
-# ac 257069779
+# ac 782939804
 # 西昌 554262929
 # 测试 953219612
 # job1 = scheduler.add_job(get_news, 'interval', minutes=1)
@@ -126,7 +126,7 @@ job2 = scheduler.add_job(fun2, 'cron', hour=7, minute=0)
 #     action = Action(qq=461505108)
 #     img = get_news()
 #     # action.sendGroupPic(544830164, content="#今日早报#", picUrl=img)
-#     # action.sendGroupPic(257069779, content="#今日早报#", picUrl=img)
+#     # action.sendGroupPic(782939804, content="#今日早报#", picUrl=img)
 #     # action.sendGroupPic(953219612, content="#今日早报#", picUrl=img)
 #     action.sendFriendPic(2311366525, content="#今日早报#", picUrl=img)
 #     del action

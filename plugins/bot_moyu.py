@@ -44,14 +44,14 @@ def get_nums():
     s = s1+s2+s3
 
     headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/97.0.4692.71 Safari/537.36',
-                'Content-Type': "application/x-www-form-urlencoded"}
+               'Content-Type': "application/x-www-form-urlencoded"}
 
     url = 'https://api.j4u.ink/proxy/remote/moyu.json'
 
     content = requests.get(url, headers=headers, timeout=10)
     img_url = re.findall(r'https:.*?png', content.text)[0].replace('\\', '')
     action = Action(qq=jconfig.bot)
-    action.sendGroupPic(257069779,
+    action.sendGroupPic(782939804,
                         picUrl=img_url,
                         content=s)
 
