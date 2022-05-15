@@ -51,6 +51,8 @@ async def send_news():
     groups = []
     for group in groups_tmp:
         groups.append(group['GroupId'])
+    
+    groups.remove(649508208,)
 
     try:
         for group in groups:
@@ -72,36 +74,48 @@ async def send_news():
     gc.collect()
 
 
+# async def send_news_to_one():
+#     img = await get_news()
+#     if img == None:
+#         return
+#     try:
+#         action = Action(qq=jconfig.bot)
+#         user_list = action.getUserList()
+#         users = []
+#         for user in user_list:
+#             users.append(user['FriendUin'])
+
+#         try:
+#             users.remove(jconfig.bot)
+#             users.remove(jconfig.superAdmin)
+#         except:
+#             pass
+
+#         for user in users:
+#             action.sendFriendPic(user, content="#今日早报#", picUrl=img)
+#             time.sleep(3)
+#             logger.info(f'向好友：{user} 发送早报！')
+#         # Action(qq=jconfig.bot).sendFriendPic(
+#         #     2382194151, content="#今日早报#", picUrl=img)
+#         logger.info("发送7点早报成功！")
+#     except:
+#         pass
+
+#     del img, user_list, users
+
+#     gc.collect()
+
+
 async def send_news_to_one():
     img = await get_news()
     if img == None:
         return
     try:
         action = Action(qq=jconfig.bot)
-        user_list = action.getUserList()
-        users = []
-        for user in user_list:
-            users.append(user['FriendUin'])
-
-        try:
-            users.remove(jconfig.bot)
-            users.remove(jconfig.superAdmin)
-        except:
-            pass
-
-        for user in users:
-            action.sendFriendPic(user, content="#今日早报#", picUrl=img)
-            time.sleep(3)
-            logger.info(f'向好友：{user} 发送早报！')
-        # Action(qq=jconfig.bot).sendFriendPic(
-        #     2382194151, content="#今日早报#", picUrl=img)
+        action.sendGroupPic(649508208, content="#今日早报#", picUrl=img)
         logger.info("发送7点早报成功！")
     except:
         pass
-
-    del img, user_list, users
-
-    gc.collect()
 
 
 def fun1():
