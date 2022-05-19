@@ -6,7 +6,7 @@ import psutil
 from botoy import S
 from botoy import async_decorators as deco
 from botoy import logger
-from botoy.config import Config
+
 
 import base64
 import json
@@ -18,7 +18,6 @@ from PIL import Image, ImageFilter
 from botoy import FriendMsg, GroupMsg, S, jconfig, logger
 from botoy.parser import friend as fp
 from botoy.parser import group as gp
-from httpx_socks import AsyncProxyTransport
 import requests
 
 from botoy import Action
@@ -51,7 +50,7 @@ async def send_news():
     groups = []
     for group in groups_tmp:
         groups.append(group['GroupId'])
-    
+
     groups.remove(649508208,)
 
     try:
