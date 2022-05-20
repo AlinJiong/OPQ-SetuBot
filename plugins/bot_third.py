@@ -9,16 +9,17 @@ from botoy.session import SessionHandler, ctx, session
 import gc
 from botoy import async_decorators as deco
 import httpx
-from botoy import Action
+from botoy import Action, AsyncAction
 
 __doc__ = "三次元"
 
 
 @deco.ignore_botself
 @deco.equal_content("三次元")
-async def receive_group_msg(ctx: FriendMsg):
+async def receive_group_msg(ctx: GroupMsg):
     action = Action(qq=jconfig.bot)
-    action.sendGroupPic(ctx.FromGroupId, picUrl='http://api.wadg.pro/')
+    action.sendGroupPic(
+        ctx.FromGroupId, picUrl='http://api.wadg.pro/', content='REVOKE[10]')
 
 
 @deco.ignore_botself
