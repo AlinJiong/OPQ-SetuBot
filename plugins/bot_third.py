@@ -18,11 +18,11 @@ __doc__ = "三次元"
 @deco.equal_content("三次元")
 async def receive_group_msg(ctx: FriendMsg):
     action = Action(qq=jconfig.bot)
-    action.sendGroupPic(ctx.FromUin, picUrl='http://api.wadg.pro/')
+    action.sendGroupPic(ctx.FromGroupId, picUrl='http://api.wadg.pro/')
 
 
 @deco.ignore_botself
 @deco.equal_content("三次元")
 async def receive_friend_msg(ctx: FriendMsg):
     action = Action(qq=jconfig.bot)
-    action.sendFriendPic(ctx.FromUserId, picUrl='http://api.wadg.pro/')
+    action.sendFriendPic(ctx.FromUin, picUrl='http://api.wadg.pro/')
