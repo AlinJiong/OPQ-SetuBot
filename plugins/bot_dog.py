@@ -6,7 +6,7 @@ from botoy import S
 from botoy import async_decorators as deco
 from botoy import logger
 
-__doc__ = "发送 舔狗日记 查看"
+__doc__ = "舔狗日记"
 
 import base64
 import json

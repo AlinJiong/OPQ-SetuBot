@@ -7,7 +7,7 @@ from botoy import S
 from botoy import async_decorators as deco
 from botoy import logger
 
-__doc__ = "发送sysinfo查看系统信息"
+__doc__ = "sysinfo 查看系统信息"
 
 
 class Sysinfo:

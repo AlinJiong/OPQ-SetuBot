@@ -7,7 +7,7 @@ from botoy.schedule import scheduler
 from sympy import im
 import requests
 import re
-__doc__ = "发送摸鱼提醒"
+__doc__ = "摸鱼提醒（auto)"
 
 
 def takeSecond(elem):

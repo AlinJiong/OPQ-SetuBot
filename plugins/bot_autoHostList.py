@@ -18,7 +18,7 @@ import random
 import httpx
 from botoy.contrib import sync_run
 
-__doc__ = "自动推送 微博热搜 早9点，晚7点"
+__doc__ = "微博热搜(auto)"
 
 
 # def url_encode(url: str):

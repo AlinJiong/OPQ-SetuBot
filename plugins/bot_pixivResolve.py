@@ -19,7 +19,7 @@ else:
 
 client_options = dict(proxies=proxies, transport=transport, timeout=10)
 
-__doc__ = """解析Pixiv链接,发送Pixiv的链接就行,如果要查看第一页 就在链接加上空格再接p1"""
+__doc__ = """解析Pixiv链接,如果要查看第一页 就在链接加上空格再接p1"""
 
 
 class PixivResolve:

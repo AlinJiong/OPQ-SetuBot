@@ -9,7 +9,7 @@ from botoy import async_decorators as deco
 from botoy import logger
 from sympy import im
 
-__doc__ = "发送 早报 查看新闻"
+__doc__ = "早报"
 
 import base64
 import json

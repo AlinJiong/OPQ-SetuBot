@@ -8,7 +8,7 @@ import gc
 from botoy import async_decorators as deco
 import httpx
 
-__doc__ = "发送 知乎热搜 获取热搜信息"
+__doc__ = "知乎热搜"
 
 
 async def get_HotList(choice: str = 'zhihu'):

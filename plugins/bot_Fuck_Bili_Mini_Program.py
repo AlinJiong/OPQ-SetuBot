@@ -19,7 +19,7 @@ import re
 from io import BytesIO
 from PIL import Image, ImageFilter
 
-__doc__ = """把B站小程序转成链接"""
+__doc__ = """B站小程序转成链接(auto)"""
 
 
 @deco.ignore_botself

@@ -7,7 +7,7 @@ import gc
 import httpx
 from botoy.contrib import sync_run
 
-__doc__ = "发送 微博热搜 获取信息"
+__doc__ = "微博热搜"
 
 
 async def get_HotList(choice: str = 'weibo'):

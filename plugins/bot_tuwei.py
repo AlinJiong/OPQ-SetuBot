@@ -8,7 +8,7 @@ import gc
 from botoy import async_decorators as deco
 import httpx
 
-__doc__ = "发送 土味情话 获取"
+__doc__ = "土味情话"
 
 
 async def get_Tuwei():

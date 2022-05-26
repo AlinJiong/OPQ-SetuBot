@@ -27,7 +27,7 @@ from botoy.contrib import sync_run
 
 import gc
 
-__doc__ = "自动发送早报"
+__doc__ = "早报（auto)"
 
 
 async def get_news():
