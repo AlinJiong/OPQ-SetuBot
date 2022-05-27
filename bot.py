@@ -6,7 +6,6 @@ from botoy.decorators import equal_content, ignore_botself
 from botoy.sugar import Text
 
 bot = AsyncBotoy(
-    qq=jconfig.bot,
     host=jconfig.host,
     port=jconfig.port,
     log=True,
@@ -47,7 +46,7 @@ def friend_ctx_middleware(ctx: FriendMsg):
 @equal_content("帮助")
 def help(_):
     Text(bot.plugMgr.help)
-    
+
 
 @bot.on_friend_msg
 @ignore_botself
@@ -59,4 +58,4 @@ def help(_):
 if __name__ == "__main__":
     asyncio.run(bot.run())
 
-##  "proxies": {"all://":"http://127.0.0.1:10809"},
+# "proxies": {"all://":"http://127.0.0.1:10809"},

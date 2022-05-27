@@ -1,17 +1,6 @@
-import json
-from pathlib import Path
 from typing import Literal
 
-from botoy import Action
-from loguru import logger
 from pydantic import BaseModel
-
-curFileDir = Path(__file__).parent.absolute()  # 当前文件路径
-
-with open(curFileDir.parent / "botoy.json", "r", encoding="utf-8") as f:
-    botConf = json.load(f)
-
-action = Action(qq=botConf["qq"], host=botConf["host"], port=botConf["port"])
 
 
 class MsgShow(BaseModel):
@@ -75,30 +64,3 @@ class GroupConfig(BaseModel):
     setting: Setting = Setting()
     setuInfoShow: MsgShow = MsgShow()
     replyMsg: ReplyMsg = ReplyMsg()
-
-
-if __name__ == "__main__":
-    logger.info("开始更新所有群数据~")
-    groupList = action.getGroupList()
-    for group in groupList:
-        groupid = group["GroupId"]
-        filePath = (
-                curFileDir.parent
-                / "plugins"
-                / "bot_Setu"
-                / "database"
-                / "DB"
-                / "configs"
-                / "{}.json".format(groupid)
-        )
-        if filePath.is_file():
-            logger.info("群:{} 配置文件已存在".format(groupid))
-            continue
-        adminList = action.getGroupAdminList(groupid)
-        admins_QQid = [i["MemberUin"] for i in adminList]
-        with open(filePath, "w", encoding="utf-8") as f:
-            json.dump(
-                GroupConfig(admins=admins_QQid).dict(), f, indent=4, ensure_ascii=False
-            )
-        logger.success("%s.json创建成功" % groupid)
-    logger.success("更新群信息成功~")

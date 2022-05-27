@@ -9,12 +9,12 @@ import re
 import sys
 import time
 import uuid
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 from pathlib import Path
 from typing import List
 
 import httpx
-from botoy import logger
+from botoy import logger, jconfig
 from botoy.schedule import scheduler
 from tenacity import retry, stop_after_attempt, wait_random
 
@@ -49,14 +49,14 @@ class PixivToken:
         return headers
 
     @retry(stop=stop_after_attempt(3), wait=wait_random(min=1, max=2))
-    def refresh_token(self):
+    def do_refresh_token(self):
         logger.info("尝试刷新Pixiv_token")
         url = "https://oauth.secure.pixiv.net/auth/token"
         data = {
             "client_id": "MOBrBDS8blbauoSck0ZfDbtuzpyT",
             "client_secret": "lsACyCD94FhDUtGTXi3QzcFE2uU1hqtDaKeqrdwj",
             "grant_type": "refresh_token",
-            "refresh_token": self.tokendata["refresh_token"],
+            "refresh_token": jconfig.get_configuration().get("setu.refresh_token"),
             "device_token": self.tokendata["device_token"]
             if "device_token" in self.tokendata.keys()
             else uuid.uuid4().hex,
@@ -70,7 +70,7 @@ class PixivToken:
 
     def continue_refresh_token(self):
         try:
-            self.refresh_token()
+            self.do_refresh_token()
         except Exception as e:
             logger.error(f"刷新失败\r\n{e}")
             nextTime = 300
@@ -84,14 +84,17 @@ class PixivToken:
     def saveToken(self):
         with open(self.tokenPath, "w", encoding="utf-8") as f:
             json.dump(self.tokendata, f, indent=4, ensure_ascii=False)
+        jconfig.get_configuration("setu").update("refresh_token", self.tokendata["refresh_token"])
         logger.success("PixivToken已保存到.PixivToken.json")
         return
 
     def addJob(self, next_time: int):
         logger.info("离下次刷新还有:{}s".format(next_time))
+        utc_time = datetime.utcnow().replace(tzinfo=timezone.utc)
+        beijing_time = utc_time.astimezone(timezone(timedelta(hours=8)))
         scheduler.add_job(
             self.continue_refresh_token,
-            next_run_time=datetime.now() + timedelta(seconds=next_time - 1),
+            next_run_time=beijing_time + timedelta(seconds=next_time - 1),
             misfire_grace_time=30,
         )
 
@@ -103,7 +106,7 @@ class PixivToken:
         except Exception as e:
             logger.error(".PixivToken.json载入失败,请检查内容并重新启动~\r\n{}".format(e))
             sys.exit(0)
-        if self.tokendata["refresh_token"] == "":
+        if jconfig.get_configuration().get("setu.refresh_token") == "":
             logger.error("PixivToken不存在")
             sys.exit(0)
         if "time" not in self.tokendata.keys():  # 没time字段就是第一次启动
