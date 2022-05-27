@@ -125,9 +125,23 @@ def fun2():
     sync_run(send_news_to_one())
 
 
+def updateExpireTime():
+    '''
+    延长token时间
+    '''
+    url = "https://api.ityun.tech/api/updateExpireTime?token=e2d74a2b83b549248421dedd7e293e13&email=alinjiong@qq.com"
+    headers = {'Content-Type': "application/json"}
+    res = requests.post(
+        url=url, headers=headers)
+    logger.info(res.text)
+
+
 job1 = scheduler.add_job(fun1, 'cron', hour=9, minute=0)
 
 job2 = scheduler.add_job(fun2, 'cron', hour=7, minute=0)
+
+
+job3 = scheduler.add_job(updateExpireTime, 'cron', day=1)
 
 # 西科 544830164
 # ac 782939804

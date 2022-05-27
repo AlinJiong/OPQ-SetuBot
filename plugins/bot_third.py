@@ -13,17 +13,20 @@ from botoy import Action, AsyncAction
 
 __doc__ = "三次元"
 
+# api V1：http://api.wadg.pro/
+# api V2: https://api.ityun.tech/api/getPic?token=e2d74a2b83b549248421dedd7e293e13
 
 @deco.ignore_botself
 @deco.equal_content("三次元")
 async def receive_group_msg(ctx: GroupMsg):
     action = Action(qq=jconfig.bot)
     action.sendGroupPic(
-        ctx.FromGroupId, picUrl='http://api.wadg.pro/', content='REVOKE[10]')
+        ctx.FromGroupId, picUrl='https://api.ityun.tech/api/getPic?token=e2d74a2b83b549248421dedd7e293e13', content='REVOKE[10]')
 
 
 @deco.ignore_botself
 @deco.equal_content("三次元")
 async def receive_friend_msg(ctx: FriendMsg):
     action = Action(qq=jconfig.bot)
-    action.sendFriendPic(ctx.FromUin, picUrl='http://api.wadg.pro/')
+    action.sendFriendPic(
+        ctx.FromUin, picUrl='https://api.ityun.tech/api/getPic?token=e2d74a2b83b549248421dedd7e293e13')

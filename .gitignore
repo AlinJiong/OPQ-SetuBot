@@ -3,3 +3,4 @@ __pycache__
 REMOVED_PLUGINS
 /.idea/
 /venv/
+*test*
