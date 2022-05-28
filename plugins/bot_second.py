@@ -18,8 +18,11 @@ __doc__ = "二次元"
 
 setuPattern = "二[次刺][元猿]"
 
-api_list = ["https://api.ixiaowai.cn/api/api.php",
-            "https://www.dmoe.cc/random.php"]
+# 感觉这两个质量不怎么样，故剔除，后面有合适的再添加
+# "https://api.ixiaowai.cn/api/api.php",
+# "https://www.dmoe.cc/random.php",
+
+api_list = ["https://iw233.cn/api/Random.php"]
 
 
 @deco.ignore_botself
@@ -35,4 +38,4 @@ async def receive_group_msg(ctx: GroupMsg):
 async def receive_friend_msg(ctx: FriendMsg):
     action = Action(qq=jconfig.bot)
     action.sendFriendPic(
-        ctx.FromUin, picUrl='https://www.dmoe.cc/random.php')
+        ctx.FromUin, picUrl=api_list[random.randint(0, len(api_list)-1)])
