@@ -1,3 +1,4 @@
+from random import random
 from botoy import logger
 from botoy import S
 from botoy import decorators
@@ -10,10 +11,15 @@ import gc
 from botoy import async_decorators as deco
 import httpx
 from botoy import Action, AsyncAction
+import random
+
 
 __doc__ = "二次元"
 
 setuPattern = "二[次刺][元猿]"
+
+api_list = ["https://api.ixiaowai.cn/api/api.php",
+            "https://www.dmoe.cc/random.php"]
 
 
 @deco.ignore_botself
@@ -21,7 +27,7 @@ setuPattern = "二[次刺][元猿]"
 async def receive_group_msg(ctx: GroupMsg):
     action = Action(qq=jconfig.bot)
     action.sendGroupPic(
-        ctx.FromGroupId, picUrl='https://www.dmoe.cc/random.php')
+        ctx.FromGroupId, picUrl=api_list[random.randint(0, len(api_list)-1)])
 
 
 @deco.ignore_botself
