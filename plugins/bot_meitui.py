@@ -1,4 +1,3 @@
-from random import random
 from botoy import logger
 from botoy import S
 from botoy import decorators
@@ -11,31 +10,21 @@ import gc
 from botoy import async_decorators as deco
 import httpx
 from botoy import Action, AsyncAction
-import random
 
-
-__doc__ = "二次元"
-
-setuPattern = "二[次刺][元猿螈]"
-
-# 感觉这两个质量不怎么样，故剔除，后面有合适的再添加
-# "https://api.ixiaowai.cn/api/api.php",
-# "https://www.dmoe.cc/random.php",
-
-api_list = ["https://iw233.cn/api/Random.php"]
+__doc__ = "看看腿"
 
 
 @deco.ignore_botself
-@deco.on_regexp(setuPattern)
+@deco.equal_content("看看腿")
 async def receive_group_msg(ctx: GroupMsg):
     action = Action(qq=jconfig.bot)
     action.sendGroupPic(
-        ctx.FromGroupId, picUrl=api_list[random.randint(0, len(api_list)-1)])
+        ctx.FromGroupId, picUrl='https://api.5s9s.com/product/api?&apikey=8715f1e155618c19e563cca1fae62f4e', content='REVOKE[10]')
 
 
 @deco.ignore_botself
-@deco.on_regexp(setuPattern)
+@deco.equal_content("看看腿")
 async def receive_friend_msg(ctx: FriendMsg):
     action = Action(qq=jconfig.bot)
     action.sendFriendPic(
-        ctx.FromUin, picUrl=api_list[random.randint(0, len(api_list)-1)])
+        ctx.FromUin, picUrl='https://api.5s9s.com/product/api?&apikey=8715f1e155618c19e563cca1fae62f4e')
