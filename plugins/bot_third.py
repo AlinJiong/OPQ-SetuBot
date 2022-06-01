@@ -20,7 +20,7 @@ __doc__ = "三次元"
 
 
 @deco.ignore_botself
-@deco.from_these_groups([953219612, 815234602])
+@deco.from_these_groups(953219612, 815234602)
 @deco.equal_content("三次元")
 async def receive_group_msg(ctx: GroupMsg):
     action = Action(qq=jconfig.bot)
