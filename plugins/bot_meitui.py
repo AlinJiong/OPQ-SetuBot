@@ -15,11 +15,12 @@ __doc__ = "看看腿"
 
 
 @deco.ignore_botself
+@deco.from_these_groups([953219612, 815234602])
 @deco.equal_content("看看腿")
 async def receive_group_msg(ctx: GroupMsg):
     action = Action(qq=jconfig.bot)
     action.sendGroupPic(
-        ctx.FromGroupId, picUrl='https://api.5s9s.com/product/api?&apikey=8715f1e155618c19e563cca1fae62f4e', content='REVOKE[10]')
+        ctx.FromGroupId, picUrl='https://api.5s9s.com/product/api?&apikey=8715f1e155618c19e563cca1fae62f4e')
 
 
 @deco.ignore_botself
