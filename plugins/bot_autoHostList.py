@@ -83,16 +83,29 @@ async def get_HotList(choice: str = 'weibo'):
     async with httpx.AsyncClient() as client:
         try:
             response = await client.post(url, data=payload, headers=headers, timeout=10)
-            text_to_dic = json.loads(response.text)
-            data = text_to_dic['data']['list']
-
+            text_to_dic, data = None, None
             content = "#实时微博热搜#\n"
 
-            for i in range(0, 10):
-                link = await long_to_short(data[i]['link'])
-                content += str(i)+'.' + data[i]['title'] + \
-                    '\n' + link + '\n'
-                time.sleep(random.randint(5, 8))
+            if response.status_code == 200:
+                text_to_dic = json.loads(response.text)
+                data = text_to_dic['data']['list']
+
+                for i in range(0, 10):
+                    link = await long_to_short(data[i]['link'])
+                    content += str(i)+'.' + data[i]['title'] + \
+                        '\n' + link + '\n'
+                    time.sleep(random.randint(5, 8))
+            else:
+                response = requests.get(
+                    url='https://tenapi.cn/resou/', timeout=10)
+                text_to_dic = json.loads(response.text)
+                data = text_to_dic['list']
+                content = "#实时微博热搜#\n"
+                for i in range(0, 10):
+                    link = await long_to_short(data[i]['url'])
+                    content += str(i)+'.' + data[i]['name'] + \
+                        '\n' + link + '\n'
+                    time.sleep(random.randint(5, 8))
 
             action = Action(qq=jconfig.bot)
             action.sendGroupText(782939804, content)
