@@ -12,24 +12,17 @@ __doc__ = "微博热搜"
 
 async def get_HotList(choice: str = 'weibo'):
     "获取微博热搜"
-    url = "https://v2.alapi.cn/api/tophub/get"
-    payload = "token=1jfSWghgtebOjpQi&type=" + choice
-    headers = {
-        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/97.0.4692.71 Safari/537.36',
-        'Content-Type': "application/x-www-form-urlencoded"
-    }
 
     async with httpx.AsyncClient() as client:
         try:
-            response = await client.post(url, data=payload, headers=headers, timeout=10)
-
+            response = requests.get(url='https://tenapi.cn/resou/', timeout=10)
             text_to_dic = json.loads(response.text)
-            data = text_to_dic['data']['list']
+            data = text_to_dic['list']
 
             content = "#实时微博热搜#\n"
 
             for i in range(0, 10):
-                content += str(i)+'.' + data[i]['title']+'\n'
+                content += str(i)+'.' + data[i]['name']+'\n'
 
             return data, content
         except:
@@ -58,7 +51,7 @@ def WbHostList():
         word = session.pop("word", wait=True, timeout=30)
 
         if str(word).isdigit():
-            session.send_text(data[int(word)]['link'])
+            session.send_text(data[int(word)]['url'])
         else:
             del data, content
             gc.collect()
