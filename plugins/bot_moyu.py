@@ -46,7 +46,7 @@ def get_nums():
     headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/97.0.4692.71 Safari/537.36',
                'Content-Type': "application/x-www-form-urlencoded"}
 
-    url = 'https://api.j4u.ink/proxy/remote/moyu.json'
+    url = 'https://api.j4u.ink/v1/store/other/proxy/remote/moyu.json'
 
     content = requests.get(url, headers=headers, timeout=10)
     img_url = re.findall(r'https:.*?png', content.text)[0].replace('\\', '')
