@@ -11,30 +11,52 @@ import httpx
 __doc__ = "知乎热搜"
 
 
-async def get_HotList(choice: str = 'zhihu'):
-    "获取知乎热搜"
-    url = "https://v2.alapi.cn/api/tophub/get"
-    payload = "token=1jfSWghgtebOjpQi&type=" + choice
+# async def get_HotList(choice: str = 'zhihu'):
+#     "获取知乎热搜"
+#     url = "https://v2.alapi.cn/api/tophub/get"
+#     payload = "token=nZJjbVKX1guoU4I4&type=zhihu"
+#     headers = {
+#         'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/97.0.4692.71 Safari/537.36',
+#         'Content-Type': "application/x-www-form-urlencoded"
+#     }
+
+#     async with httpx.AsyncClient() as client:
+#         try:
+#             response = await client.post(url, data=payload, headers=headers, timeout=10)
+#             text_to_dic = json.loads(response.text)
+#             data = text_to_dic['data']['list']
+
+#             content = "#实时知乎热搜#\n"
+
+#             for i in range(0, 10):
+#                 content += str(i)+'.' + data[i]['title'] + \
+#                     '\n' + data[i]['link'] + '\n'
+
+#             return content
+#         except:
+#             return None
+
+async def get_HotList():
+    url = 'https://tenapi.cn/zhihuresou/'
     headers = {
         'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/97.0.4692.71 Safari/537.36',
         'Content-Type': "application/x-www-form-urlencoded"
     }
+    try:
+        res = requests.get(url=url, headers=headers, timeout=10)
+        text_to_dic = json.loads(res.text)
 
-    async with httpx.AsyncClient() as client:
-        try:
-            response = await client.post(url, data=payload, headers=headers, timeout=10)
-            text_to_dic = json.loads(response.text)
-            data = text_to_dic['data']['list']
+        data = text_to_dic['list']
 
-            content = "#实时知乎热搜#\n"
+        print(data)
+        content = "#实时知乎热搜#\n"
 
-            for i in range(0, 10):
-                content += str(i)+'.' + data[i]['title'] + \
-                    '\n' + data[i]['link'] + '\n'
-
-            return content
-        except:
-            return None
+        for i in range(0, 10):
+            content += str(i)+'.' + str(data[i]['name']) + \
+                '\n' + str(data[i]['url']) + '\n'
+        return content
+    except:
+        return None
 
 
 # 对话式发送

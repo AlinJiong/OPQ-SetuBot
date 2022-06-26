@@ -24,7 +24,7 @@ import requests
 
 def get_news():
     url = "https://v2.alapi.cn/api/dog"
-    payload = "token=1jfSWghgtebOjpQi&format=json"
+    payload = "token=nZJjbVKX1guoU4I4&format=json"
     headers = {'Content-Type': "application/x-www-form-urlencoded"}
     response = requests.request("POST", url, data=payload, headers=headers)
     text_to_dic = json.loads(response.text)

@@ -92,7 +92,7 @@ def WbHostList():
 # async def get_HotList(choice: str = 'weibo'):
 #     "获取微博热搜"
 #     url = "https://v2.alapi.cn/api/tophub/get"
-#     payload = "token=1jfSWghgtebOjpQi&type=" + choice
+#     payload = "token=nZJjbVKX1guoU4I4&type=" + choice
 #     headers = {
 #         'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/97.0.4692.71 Safari/537.36',
 #         'Content-Type': "application/x-www-form-urlencoded"
