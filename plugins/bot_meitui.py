@@ -14,11 +14,15 @@ from botoy import Action, AsyncAction
 
 __doc__ = "看看腿"
 
+# api
+# V1: http://yuqingapi.xyz/api/tu.php
+# v2: http://121.40.95.21/api/tu.php
+
 
 async def getPicUrl():
     headers = {
         'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/97.0.4692.71 Safari/537.36'}
-    response = requests.get(url='http://yuqingapi.xyz/api/tu.php',
+    response = requests.get(url='http://121.40.95.21/api/tu.php',
                             headers=headers, timeout=10)
     if response.status_code != 200:
         logger.info('获取美腿图片异常')

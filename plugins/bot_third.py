@@ -25,7 +25,7 @@ __doc__ = "三次元"
 async def receive_group_msg(ctx: GroupMsg):
     action = Action(qq=jconfig.bot)
     action.sendGroupPic(
-        ctx.FromGroupId, picUrl='https://api.uomg.com/api/rand.img3?format=images')
+        ctx.FromGroupId, picUrl='http://api.wadg.pro/')
 
 
 @deco.ignore_botself
@@ -33,4 +33,4 @@ async def receive_group_msg(ctx: GroupMsg):
 async def receive_friend_msg(ctx: FriendMsg):
     action = Action(qq=jconfig.bot)
     action.sendFriendPic(
-        ctx.FromUin, picUrl='https://api.uomg.com/api/rand.img3?format=images')
+        ctx.FromUin, picUrl='http://api.wadg.pro/')
