@@ -27,7 +27,10 @@ async def getPicUrl():
     if response.status_code != 200:
         logger.info('获取美腿图片异常')
         return None
-    return response.text
+
+    else:
+        '''坑爹玩意，找了一下午'''
+        return response.text.replace('\n', '')
 
 
 @deco.ignore_botself
@@ -35,17 +38,17 @@ async def getPicUrl():
 @deco.equal_content("看看腿")
 async def receive_group_msg(ctx: GroupMsg):
     action = Action(qq=jconfig.bot)
-    picUrl = await getPicUrl()
-    if picUrl:
+    pic = await getPicUrl()
+    if pic:
         action.sendGroupPic(
-            ctx.FromGroupId, picUrl=picUrl)
+            ctx.FromGroupId, picUrl=pic)
 
 
 @deco.ignore_botself
 @deco.equal_content("看看腿")
 async def receive_friend_msg(ctx: FriendMsg):
     action = Action(qq=jconfig.bot)
-    picUrl = await getPicUrl()
-    if picUrl:
+    pic = await getPicUrl()
+    if pic:
         action.sendFriendPic(
-            ctx.FromUin, picUrl=picUrl)
+            ctx.FromUin, picUrl=pic)
