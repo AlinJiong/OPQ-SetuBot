@@ -25,6 +25,7 @@ async def get_img_url():
 
     random_id = str(random.randint(1, 7179))
     url = f'https://mm.tvv.tw/archives/{random_id}.html'
+    logger.info(url)
     res = requests.get(url=url,
                        headers=headers, timeout=10)
 
