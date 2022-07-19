@@ -30,7 +30,7 @@ async def get_img_url():
     res = requests.get(url=url, headers=headers, timeout=10)
 
     if res.status_code == 200:
-        pattern = r'https://img.gh-proxy.com/.*?.jpg'
+        pattern = r'https?://img.gh-proxy.com/.*?.jpg'
         img_list = re.findall(pattern, res.text)
         img_list = list(set(img_list))
         logger.info(img_list)
