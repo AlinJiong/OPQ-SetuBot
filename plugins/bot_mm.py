@@ -31,7 +31,7 @@ async def get_img_url():
     if res.status_code == 200:
         pattern = r'https://img.gh-proxy.com/.*?.jpg'
         img_list = re.findall(pattern, res.text)
-        logger.inf(img_list)
+        logger.info(img_list)
         if len(img_list) >= 7:
             return img_list[1:6]
         else:
