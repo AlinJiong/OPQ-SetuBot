@@ -20,14 +20,14 @@ __doc__ = "妹子图"
 
 async def get_img_url():
     headers = {
-        'User-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/102.0.0.0 Safari/537.36'
+        'User-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/103.0.5060.114 Safari/537.36 Edg/103.0.1264.62',
+        'Cookie': '_gid=GA1.2.290905563.1658156949; _ga=GA1.2.1357810641.1658156947; _ga_JJBVYW78Q1=GS1.1.1658156947.1.1.1658158762.0',
     }
 
     random_id = str(random.randint(1, 7179))
     url = f'https://mm.tvv.tw/archives/{random_id}.html'
     logger.info(url)
-    res = requests.get(url=url,
-                       headers=headers, timeout=10)
+    res = requests.get(url=url, headers=headers, timeout=10)
 
     if res.status_code == 200:
         pattern = r'https://img.gh-proxy.com/.*?.jpg'
