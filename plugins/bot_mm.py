@@ -32,11 +32,12 @@ async def get_img_url():
     if res.status_code == 200:
         pattern = r'https://img.gh-proxy.com/.*?.jpg'
         img_list = re.findall(pattern, res.text)
+        img_list = list(set(img_list))
         logger.info(img_list)
         if len(img_list) >= 7:
-            return img_list[1:6]
+            return img_list[:5]
         else:
-            return img_list[1:]
+            return img_list
     else:
         logger.info('请求mm图失败！')
         return None
