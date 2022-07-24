@@ -13,6 +13,7 @@ from botoy import Action, AsyncAction
 import re
 import requests
 import random
+import time
 
 
 __doc__ = "妹子图"
@@ -34,7 +35,7 @@ async def get_img_url():
         img_list = re.findall(pattern, res.text)
         img_list = list(set(img_list))
         logger.info(img_list)
-        if len(img_list) >= 6:
+        if len(img_list) > 5:
             return img_list[:5]
         else:
             return img_list
@@ -48,6 +49,14 @@ async def get_img_url():
 @deco.equal_content("妹子图")
 async def receive_group_msg(ctx: GroupMsg):
     action = Action(qq=jconfig.bot)
-    img_list = await get_img_url()
-    if img_list:
-        action.sendGroupMultiPic(ctx.FromGroupId, *img_list)
+    items = await get_img_url()
+    if items:
+        md5s = []
+        for item in items:
+            if item.startswith("http"):
+                info = action.getGroupPicInfo(url=item)
+            else:
+                info = action.getGroupPicInfo(base64=item)
+            md5s.append(info["PicInfo"]["PicMd5"])
+            time.sleep(random.randint(3, 5))
+        action.sendGroupPic(ctx.FromGroupId,  picMd5s=md5s)
