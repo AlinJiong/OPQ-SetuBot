@@ -22,15 +22,13 @@ setuPattern = "二[次刺][元猿螈]"
 # "https://api.ixiaowai.cn/api/api.php",
 # "https://www.dmoe.cc/random.php",
 
-api_list = ["https://iw233.cn/api/Random.php"]
-
 
 @deco.ignore_botself
 @deco.on_regexp(setuPattern)
 async def receive_group_msg(ctx: GroupMsg):
     action = Action(qq=jconfig.bot)
     action.sendGroupPic(
-        ctx.FromGroupId, picUrl=api_list[random.randint(0, len(api_list)-1)])
+        ctx.FromGroupId, picUrl='https://iw233.cn/api/Random.php')
 
 
 @deco.ignore_botself
@@ -38,4 +36,4 @@ async def receive_group_msg(ctx: GroupMsg):
 async def receive_friend_msg(ctx: FriendMsg):
     action = Action(qq=jconfig.bot)
     action.sendFriendPic(
-        ctx.FromUin, picUrl=api_list[random.randint(0, len(api_list)-1)])
+        ctx.FromUin, picUrl='https://iw233.cn/api/Random.php')
