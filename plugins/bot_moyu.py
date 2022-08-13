@@ -4,14 +4,9 @@ import datetime
 from botoy import Action
 from botoy import FriendMsg, GroupMsg, S, jconfig, logger
 from botoy.schedule import scheduler
-from sympy import im
 import requests
 import re
 __doc__ = "摸鱼提醒（auto)"
-
-
-def takeSecond(elem):
-    return elem[1]
 
 
 def get_nums():
@@ -19,24 +14,35 @@ def get_nums():
     today = LunarDate.today()
     lunardate = today.strftime('%L%M月%D')
 
-    Festivals_ch = ['清明', '劳动节', '端午节', '中秋节', '国庆节', '元旦', '春节']
-    Festivals_ch2 = ['清明节', '劳动节', '端午节', '中秋节', '国庆节', '元旦节', '春节']
+    festivals_zh = ['清明', '劳动节', '端午节', '中秋节', '国庆节', '元旦', '春节']
+    festivals_zh2 = ['清明节', '劳动节', '端午节', '中秋节', '国庆节', '元旦节', '春节']
 
-    Festivals_num = []
-    for festival in Festivals_ch:
-        Festivals_num.append(get_festival(festival).countdown())
+    festivals_num = []
+    for festival in festivals_zh:
+        festivals_num.append(get_festival(festival).countdown())
 
-    Festivals = list(zip(Festivals_ch2, Festivals_num))
+    festivals = list(zip(festivals_zh2, festivals_num))
 
     # 获取农历节假日，并排序
-    Festivals.sort(key=takeSecond)
+    festivals.sort(key=lambda x: x[1])
+
+    res = []
+
+    for item in festivals:
+        res.append(item)
+        if item[0] == '春节':
+            break
 
     s1 = "今天是%s, 农历%s,早上好,摸鱼人！\n工作再累,一定不要忘记摸鱼哦！有事没事起身去茶水间,去厕所,去廊道走走别老在工位上坐着,钱是老板的, 但命是自己的。\n" % (
         new_date, lunardate)
 
     s2 = ''
-    for i in Festivals:
+    for i in res:
         s2 += '距离%s还有%d天,\n' % (i[0], i[1])
+
+    virus_begin = datetime.datetime(2019, 12, 16)
+    virus_ = datetime.datetime.today()
+    s2 += '【新冠】至今已有%d天！\n' % (virus_-virus_begin).days
 
     s3 = '''上班是帮老板赚钱,摸鱼是赚老板的钱！最后,祝愿天下所有摸鱼人,都能愉快的渡过每一天......
 【友情提示】三甲医院ICU躺一天平均费用大概一万块,你晚一天进ICU,就等于为你的家庭多赚一万块。少上班,多摸鱼！！！'''
