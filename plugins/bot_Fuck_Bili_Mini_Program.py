@@ -27,18 +27,23 @@ __doc__ = """B站小程序转成链接(auto)"""
 async def receive_group_msg(ctx: GroupMsg):
     if info := re.findall(r"(https://b23\.tv/\w*)", ctx.Content):
         try:
-            img_url = re.findall(r'http://pub.*?\\', ctx.Content)[0].replace('\\', '')
+            img_url = re.findall(r'http://pub.*?\\',
+                                 ctx.Content)[0].replace('\\', '')
             content = requests.request("get", img_url).content
             with BytesIO() as bf:
                 image = Image.open(BytesIO(content))
                 image.save(bf, format="JPEG")
                 img = base64.b64encode(bf.getvalue()).decode()
 
+            text = re.findall(r'summary\\u003e(.*)\\u003c/summary',
+                              ctx.Content)[0]
+
+            print(text)
             await S.bind(ctx).aimage(
                 img,
-                info[0],
+                text+info[0],
                 type=S.TYPE_BASE64,
             )
-            #await S.bind(ctx).atext(info[0])
+            # await S.bind(ctx).atext(info[0])
         except:
             pass
