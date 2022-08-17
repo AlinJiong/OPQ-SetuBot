@@ -17,6 +17,7 @@ __doc__ = "三次元"
 # api V2: https://api.ityun.tech/api/getPic?token=e2d74a2b83b549248421dedd7e293e13
 # api V3: https://api.uomg.com/api/rand.img3?format=images
 # api v4: https://api.5s9s.com/product/api?&apikey=61334714823020445e3cbc82aa5c5b26
+# api v5: http://api.btstu.cn/sjbz/?lx=meizi
 
 
 @deco.ignore_botself
@@ -25,7 +26,7 @@ __doc__ = "三次元"
 async def receive_group_msg(ctx: GroupMsg):
     action = Action(qq=jconfig.bot)
     action.sendGroupPic(
-        ctx.FromGroupId, picUrl='http://api.wadg.pro/')
+        ctx.FromGroupId, picUrl='http://api.btstu.cn/sjbz/?lx=meizi')
 
 
 @deco.ignore_botself
@@ -33,4 +34,4 @@ async def receive_group_msg(ctx: GroupMsg):
 async def receive_friend_msg(ctx: FriendMsg):
     action = Action(qq=jconfig.bot)
     action.sendFriendPic(
-        ctx.FromUin, picUrl='http://api.wadg.pro/')
+        ctx.FromUin, picUrl='http://api.btstu.cn/sjbz/?lx=meizi')
