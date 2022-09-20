@@ -28,7 +28,7 @@ setuPattern = "二[次刺][元猿螈]"
 async def receive_group_msg(ctx: GroupMsg):
     action = Action(qq=jconfig.bot)
     action.sendGroupPic(
-        ctx.FromGroupId, picUrl='http://aqua.iw233.cn/api.php?sort=random')
+        ctx.FromGroupId, picUrl='https://www.dmoe.cc/random.php')
 
 
 @deco.ignore_botself
@@ -36,4 +36,4 @@ async def receive_group_msg(ctx: GroupMsg):
 async def receive_friend_msg(ctx: FriendMsg):
     action = Action(qq=jconfig.bot)
     action.sendFriendPic(
-        ctx.FromUin, picUrl='http://aqua.iw233.cn/api.php?sort=random')
+        ctx.FromUin, picUrl='https://www.dmoe.cc/random.php')
