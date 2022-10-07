@@ -17,3 +17,7 @@ python安装依赖、Python环境依赖没安装，导致有三个包安装不�
 6、不修改端口选项
 
 pip install -r requirements.txt
+
+bash install.sh  --port=8081 --user=test --passwd=test824.
+
+vasma

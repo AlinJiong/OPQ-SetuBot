@@ -137,10 +137,10 @@ def updateExpireTime():
 
 job1 = scheduler.add_job(fun1, 'cron', hour=9, minute=0)
 
-job2 = scheduler.add_job(fun2, 'cron', hour=7, minute=0)
+#job2 = scheduler.add_job(fun2, 'cron', hour=7, minute=0)
 
 
-job3 = scheduler.add_job(updateExpireTime, 'cron', day=1)
+#job3 = scheduler.add_job(updateExpireTime, 'cron', day=1)
 
 # 西科 544830164
 # ac 782939804
