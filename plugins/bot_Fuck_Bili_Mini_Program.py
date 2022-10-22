@@ -38,7 +38,7 @@ async def receive_group_msg(ctx: GroupMsg):
             text = re.findall(r'summary\\u003e(.*)\\u003c/summary',
                               ctx.Content)[0]
 
-            print(text)
+            text = text + '\n'
             await S.bind(ctx).aimage(
                 img,
                 text+info[0],
