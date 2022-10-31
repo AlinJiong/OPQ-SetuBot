@@ -46,10 +46,7 @@ async def send_news():
         return
 
     action = Action(qq=jconfig.bot)
-    groups_tmp = action.getGroupList()
-    groups = []
-    for group in groups_tmp:
-        groups.append(group['GroupId'])
+    groups = [782939804, 331620093, 695072944, 815234602, 544830164]
 
     try:
         for group in groups:
