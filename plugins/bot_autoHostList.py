@@ -91,6 +91,8 @@ async def get_HotList(choice: str = 'weibo'):
             action = Action(qq=jconfig.bot)
             action.sendGroupText(773933325, content)
             time.sleep(5)
+            action.sendGroupText(331620093, content)
+            time.sleep(5)
             action.sendFriendText(jconfig.superAdmin, content)
 
         except Exception as e:
