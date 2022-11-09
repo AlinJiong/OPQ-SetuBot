@@ -57,7 +57,7 @@ def get_nums():
     content = requests.get(url, headers=headers, timeout=10)
     img_url = re.findall(r'https:.*?png', content.text)[0].replace('\\', '')
     action = Action(qq=jconfig.bot)
-    action.sendGroupPic(782939804,
+    action.sendGroupPic(773933325,
                         picUrl=img_url,
                         content=s)
 
