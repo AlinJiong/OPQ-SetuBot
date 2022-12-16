@@ -51,6 +51,8 @@ async def send_news():
     groups = []
     for group in groups_tmp:
         groups.append(group['GroupId'])
+        
+    groups.remove(953219612)
 
     try:
         for group in groups:
