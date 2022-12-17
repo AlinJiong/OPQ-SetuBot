@@ -46,7 +46,7 @@ def get_moyu():
 
     virus_begin = datetime.datetime(2019, 12, 16)
     virus_ = datetime.datetime.today()
-    # s2 += '【新冠】至今已有%d天！\n' % (virus_-virus_begin).days
+    s2 += '【新冠】至今已有%d天！\n' % (virus_-virus_begin).days
 
     s3 = '''上班是帮老板赚钱,摸鱼是赚老板的钱！最后,祝愿天下所有摸鱼人,都能愉快的渡过每一天......
 【友情提示】三甲医院ICU躺一天平均费用大概一万块,你晚一天进ICU,就等于为你的家庭多赚一万块。少上班,多摸鱼！！！'''
