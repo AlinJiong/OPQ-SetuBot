@@ -58,6 +58,8 @@ __doc__ = "微博热搜(auto)"
 #             return url
 
 
+
+
 async def long_to_short(origin_url: str):
     request_url = "https://v2.alapi.cn/api/url?token=nZJjbVKX1guoU4I4&url=" + \
         origin_url+"&type=m6zcn"
