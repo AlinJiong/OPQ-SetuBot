@@ -6,10 +6,14 @@ from botoy import FriendMsg, GroupMsg, S, jconfig, logger
 from botoy.schedule import scheduler
 import requests
 import re
+import requests
+import base64
+from PIL import Image
+from io import BytesIO
 __doc__ = "摸鱼提醒（auto)"
 
 
-def get_nums():
+def get_moyu():
     new_date = datetime.date.today().strftime('%Y年%m月%d日')
     today = LunarDate.today()
     lunardate = today.strftime('%L%M月%D')
@@ -42,24 +46,34 @@ def get_nums():
 
     virus_begin = datetime.datetime(2019, 12, 16)
     virus_ = datetime.datetime.today()
-    # s2 += '【新冠】至今已有%d天！\n' % (virus_-virus_begin).days
+    s2 += '【新冠】至今已有%d天！\n' % (virus_-virus_begin).days
 
     s3 = '''上班是帮老板赚钱,摸鱼是赚老板的钱！最后,祝愿天下所有摸鱼人,都能愉快的渡过每一天......
 【友情提示】三甲医院ICU躺一天平均费用大概一万块,你晚一天进ICU,就等于为你的家庭多赚一万块。少上班,多摸鱼！！！'''
 
     s = s1+s2+s3
 
-    headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/97.0.4692.71 Safari/537.36',
-               'Content-Type': "application/x-www-form-urlencoded"}
+    headers = {
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/97.0.4692.71 Safari/537.36'}
 
     url = 'https://api.j4u.ink/v1/store/other/proxy/remote/moyu.json'
 
     content = requests.get(url, headers=headers, timeout=10)
     img_url = re.findall(r'https:.*?png', content.text)[0].replace('\\', '')
+
+    res = requests.get(url=img_url, headers=headers)
+
+    img_base64 = ""
+
+    with Image.open(BytesIO(res.content)) as pic:
+        with BytesIO() as bf:
+            pic.save(bf, format="PNG")
+            img_base64 = base64.b64encode(bf.getvalue()).decode()
+
     action = Action(qq=jconfig.bot)
     action.sendGroupPic(773933325,
-                        picUrl=img_url,
+                        picBase64Buf=img_base64,
                         content=s)
 
 
-job1 = scheduler.add_job(get_nums, 'cron', hour=9, minute=10)
+job1 = scheduler.add_job(get_moyu, 'cron', hour=9, minute=10)
