@@ -16,6 +16,8 @@ from urllib import parse
 import json
 import threading
 import time
+from botoy import logger
+
 
 MyBotName = '@' + '摸鱼提醒小助手' + ' '  # 在这里输入你的Bot的昵称
 locka = threading.Lock()
@@ -32,32 +34,24 @@ def main(ctx=GroupMsg):
         if Msg.find(MyBotName) == 0:
             qa = Msg.replace(MyBotName, '')
             print(qa)
-            try:
-                locka.acquire()
-                print('获得锁')
+            with locka:
                 if len(qa) > 2:  # 这里是为了防止有人简单回复你好浪费API免费额度，如果有需要可以自行修改最短长度
-                    res = requests.get(
-                        url='http://chat.h2ai.cn/api/trilateral/openAi/completions?prompt=' +
-                            qa+'&openaiId=123910453021889130720167012221015126174233152702504',
-                        timeout=30)
-                    if res.status_code != 200:
-                        S.bind(ctx).text("调用超时，请重试！", 'utf-8')
-                    else:
+                    try:
+                        res = requests.get(
+                            url='http://chat.h2ai.cn/api/trilateral/openAi/completions?prompt=' +
+                                qa+'&openaiId=123910453021889130720167012221015126174233152702504',
+                            timeout=30)
                         txt = json.loads(res.text)
+                        print(txt)
                         try:
                             ans = txt['data']['choices'][0]['text'].replace(
                                 '<br/>', ' ')
                             S.bind(ctx).text(ans, 'utf-8')
-                        except:
+                        except Exception as e:
+                            logger.info(e)
                             pass
+                    except Exception as e:
+                        logger.info(e)
+                        S.bind(ctx).text("调用超时，请重试！", 'utf-8')
                 else:
                     S.bind(ctx).text("已禁止简单问题", 'utf-8')
-                    Action(ctx.CurrentQQ).shutUserUp(
-                        groupID=ctx.FromGroupId,
-                        userid=ctx.FromUserId,
-                        ShutTime=1
-                    )
-            finally:
-                time.sleep(10)
-                print('释放锁')
-                locka.release()
