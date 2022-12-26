@@ -65,6 +65,8 @@ async def send_news():
 
         action.sendFriendPic(jconfig.superAdmin,
                              content="#今日早报#", picUrl=img)
+        
+        action.sendFriendPic(3093892740, content="#今日早报#", picUrl=img)
 
         logger.info("发送早报成功！")
     except:
