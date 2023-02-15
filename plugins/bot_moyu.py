@@ -75,5 +75,9 @@ def get_moyu():
                         picBase64Buf=img_base64,
                         content=s)
 
+    action.sendFriendPic(3093892740,
+                        picBase64Buf=img_base64,
+                        content=s)
+
 
 job1 = scheduler.add_job(get_moyu, 'cron', hour=9, minute=10)

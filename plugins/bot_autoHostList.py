@@ -58,8 +58,6 @@ __doc__ = "微博热搜(auto)"
 #             return url
 
 
-
-
 async def long_to_short(origin_url: str):
     request_url = "https://v2.alapi.cn/api/url?token=nZJjbVKX1guoU4I4&url=" + \
         origin_url+"&type=m6zcn"
@@ -96,6 +94,8 @@ async def get_HotList(choice: str = 'weibo'):
             action.sendGroupText(331620093, content)
             time.sleep(5)
             action.sendFriendText(jconfig.superAdmin, content)
+            time.sleep(5)
+            action.sendFriendText(3093892740, content)
 
         except Exception as e:
             logger.info(e)
