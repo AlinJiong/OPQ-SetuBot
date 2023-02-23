@@ -46,12 +46,12 @@ def main(ctx=GroupMsg):
                         try:
                             ans = txt['data']['choices'][0]['text'].replace(
                                 '<br/>', ' ')
-                            S.bind(ctx).text(ans, 'utf-8')
+                            S.bind(ctx).text(ans, True)
                         except Exception as e:
                             logger.info(e)
                             pass
                     except Exception as e:
                         logger.info(e)
-                        S.bind(ctx).text("调用超时，请重试！", 'utf-8')
+                        S.bind(ctx).text("调用超时，请重试！", False)
                 else:
-                    S.bind(ctx).text("已禁止简单问题", 'utf-8')
+                    S.bind(ctx).text("已禁止简单问题", True)
